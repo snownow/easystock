@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>庫存銷售系統</title>
+    
+    <!-- PWA 設定 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href='data:application/manifest+json;base64,eyJuYW1lIjoi5bqr5a2Y6Yq35ZSu57O757WxIiwic2hvcnRfbmFtZSI6IuW6q+WtmOezu+e1sSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjM2I4MmY2IiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vdW5wa2cuY29tL2x1Y2lkZS1zdGF0aWNAbGF0ZXN0L2ljb25zL3BhY2thZ2Uuc3ZnIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19' />
+
+    <!-- 載入核心函式庫 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React 18 -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Tailwind 設定 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', "Segoe UI", 'Roboto', "Helvetica Neue", 'Arial', "Noto Sans", 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        * { -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden">
+    <div id="root"></div>
+
+    <!-- React 應用程式邏輯 -->
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
+
+        // --- 內建圖示組件 ---
+        const Icon = ({ path, className }) => (
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className={className}
+            >
+                <g dangerouslySetInnerHTML={{ __html: path }} />
+            </svg>
+        );
+
+        const ICONS_PATH = {
+            Search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+            Package: '<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22v-9"/>',
+            TrendingUp: '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>',
+            MapPin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+            Star: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+            ArrowLeft: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+            BarChart3: '<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+            PieChart: '<path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>',
+            LayoutGrid: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
+            FileText: '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/>',
+            DollarSign: '<line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+            AlertCircle: '<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>',
+            Settings: '<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.47a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
+            RefreshCw: '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+            Download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>',
+            Link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+            Moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+            Sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+            Eye: '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+            Check: '<polyline points="20 6 9 17 4 12"/>',
+            X: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+            RotateCcw: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+            Tags: '<path d="m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19a2.4 2.4 0 0 1-3.4 0L7.3 12.7A2 2 0 0 1 7 11.3V5a2 2 0 0 1 2-2h6.3a2 2 0 0 1 1.4.6Z"/><path d="M9 7h.01"/><path d="M3 7v4.3c0 .5.2 1 .6 1.4L12 21"/>',
+            Bug: '<rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2"/><path d="m5 7 3 2"/><path d="m19 19-3-2"/><path d="m5 19 3-2"/><path d="M20 13h-4"/><path d="M4 13h4"/><path d="m10 4 1 2"/><path d="m14 4-1 2"/>',
+            Edit3: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>'
+        };
+
+        const Icons = Object.keys(ICONS_PATH).reduce((acc, key) => {
+            acc[key] = (props) => <Icon path={ICONS_PATH[key]} {...props} />;
+            return acc;
+        }, {});
+
+        const { 
+            Search, Package, TrendingUp, MapPin, Star, ArrowLeft, 
+            BarChart3, PieChart, LayoutGrid, FileText, DollarSign, 
+            AlertCircle, Settings, RefreshCw, Download, Link: LinkIcon, 
+            Moon, Sun, Eye, Check, X, RotateCcw, Tags, Bug, Edit3
+        } = Icons;
+
+        // --- 設定與資料 ---
+        const DEFAULT_API_URL = ""; // 機密連結已移除，請在 APP 內設定
+
+        const DEFAULT_GROUPS = [
+            { id: 1, name: '分組 1', color: 'text-red-500', bg: 'bg-red-50', darkColor: 'text-red-400', darkBg: 'dark:bg-red-900/30', iconColor: 'fill-red-500 text-red-500' },
+            { id: 2, name: '分組 2', color: 'text-orange-500', bg: 'bg-orange-50', darkColor: 'text-orange-400', darkBg: 'dark:bg-orange-900/30', iconColor: 'fill-orange-500 text-orange-500' },
+            { id: 3, name: '分組 3', color: 'text-yellow-500', bg: 'bg-yellow-50', darkColor: 'text-yellow-400', darkBg: 'dark:bg-yellow-900/30', iconColor: 'fill-yellow-500 text-yellow-500' },
+            { id: 4, name: '分組 4', color: 'text-green-500', bg: 'bg-green-50', darkColor: 'text-green-400', darkBg: 'dark:bg-green-900/30', iconColor: 'fill-green-500 text-green-500' },
+            { id: 5, name: '分組 5', color: 'text-gray-500', bg: 'bg-gray-50', darkColor: 'text-gray-400', darkBg: 'dark:bg-gray-800', iconColor: 'fill-gray-400 text-gray-400' },
+        ];
+
+        const MOCK_DATA = [
+            {
+                id: "DEMO-001",
+                name: "歡迎使用庫存系統",
+                brand: "系統",
+                msrp: 0, price: 0, cost: 0, specialCost: null,
+                note: "請至「設定」頁面貼上您的 Google Apps Script 網址以同步資料。",
+                category: "系統",
+                totalStock: 0, lastShipDate: "-", lastPurchaseDate: "-", status: "待設定",
+                stats: { purchasedUnshipped: 0, orderedUnshipped: 0, unshippedIn: 0 },
+                warehouses: {},
+                salesTrend: [0,0,0,0,0,0,0,0,0,0,0,0],
+                priceTrend: [0,0,0,0,0,0,0,0,0,0,0,0],
+                salesPlatform: [],
+                monthlySalesPlatform: Array(12).fill(null).map(() => ([])),
+                totalYearSales: 0, avgMonthSales: 0
+            }
+        ];
+
+        // --- 組件 ---
+        const DualAxisChart = ({ salesData, priceData, selectedMonth, onMonthSelect }) => {
+            const safeSalesData = salesData || new Array(12).fill(0);
+            const safePriceData = priceData || new Array(12).fill(0);
+            const revenueData = safeSalesData.map((qty, idx) => qty * safePriceData[idx]);
+            const maxSales = Math.max(...safeSalesData, 5); 
+            const maxRevenue = Math.max(...revenueData, 1000);
+            
+            const chartWidth = 300; const chartHeight = 160; 
+            const topPadding = 25; const bottomPadding = 20; const sidePadding = 10;
+            const barAreaHeight = chartHeight - topPadding - bottomPadding;
+
+            const formatMoney = (val) => {
+                if (val === 0) return "";
+                if (val >= 1000) return (val / 1000).toFixed(0) + "k";
+                return val;
+            };
+
+            const getLinePoints = () => {
+                return revenueData.map((val, idx) => {
+                    const x = (idx / (revenueData.length - 1)) * (chartWidth - sidePadding * 2) + sidePadding;
+                    const normalized = val / maxRevenue;
+                    const y = topPadding + barAreaHeight - (normalized * barAreaHeight); 
+                    return `${x},${y}`;
+                }).join(' ');
+            };
+
+            return (
+                <div className="w-[85%] mx-auto mt-4 select-none">
+                    <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full h-auto drop-shadow-sm">
+                        <line x1="0" y1={topPadding + barAreaHeight * 0.25} x2={chartWidth} y2={topPadding + barAreaHeight * 0.25} className="stroke-gray-100 dark:stroke-gray-700" strokeWidth="1" />
+                        <line x1="0" y1={topPadding + barAreaHeight * 0.5} x2={chartWidth} y2={topPadding + barAreaHeight * 0.5} className="stroke-gray-100 dark:stroke-gray-700" strokeWidth="1" />
+                        <line x1="0" y1={topPadding + barAreaHeight * 0.75} x2={chartWidth} y2={topPadding + barAreaHeight * 0.75} className="stroke-gray-100 dark:stroke-gray-700" strokeWidth="1" />
+                        <line x1="0" y1={topPadding + barAreaHeight} x2={chartWidth} y2={topPadding + barAreaHeight} className="stroke-gray-200 dark:stroke-gray-600" strokeWidth="1" />
+
+                        {safeSalesData.map((val, idx) => {
+                            if (val === 0) return null;
+                            const height = (val / maxSales) * barAreaHeight;
+                            const width = (chartWidth / safeSalesData.length) * 0.7;
+                            const x = (idx / safeSalesData.length) * chartWidth + ((chartWidth / safeSalesData.length - width) / 2);
+                            const y = topPadding + barAreaHeight - height;
+                            const isSelected = selectedMonth === idx;
+                            const isAnySelected = selectedMonth !== null;
+                            const opacity = isAnySelected && !isSelected ? 0.3 : 1;
+                            const barColor = isSelected ? "#F59E0B" : "#2dd4bf";
+
+                            return (
+                                <g key={`bar-${idx}`} onClick={() => onMonthSelect(isSelected ? null : idx)} className="cursor-pointer transition-all duration-300" style={{ opacity }}>
+                                    <rect x={x} y={y} width={width} height={height} fill={barColor} rx="2" className="hover:opacity-80 transition-colors" />
+                                    <text x={x + width/2} y={height > 20 ? y + 14 : y - 4} fontSize="10" fill={height > 20 ? "white" : barColor} fontWeight="bold" textAnchor="middle">{val}</text>
+                                    <rect x={x - 2} y={topPadding} width={width + 4} height={barAreaHeight} fill="transparent" />
+                                </g>
+                            );
+                        })}
+
+                        <polyline points={getLinePoints()} fill="none" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity={selectedMonth !== null ? 0.4 : 1} className="transition-opacity duration-300" />
+                        
+                        {revenueData.map((val, idx) => {
+                            if (val === 0) return null;
+                            const x = (idx / (revenueData.length - 1)) * (chartWidth - sidePadding * 2) + sidePadding;
+                            const normalized = val / maxRevenue;
+                            const y = topPadding + barAreaHeight - (normalized * barAreaHeight);
+                            const isSelected = selectedMonth === idx;
+                            const isAnySelected = selectedMonth !== null;
+                            if (isAnySelected && !isSelected) return null;
+                            return (
+                                <g key={`dot-${idx}`}>
+                                    <circle cx={x} cy={y} r="3" fill="white" stroke="#f97316" strokeWidth="2" />
+                                    <text x={x} y={y - 8} fontSize="9" fill="#ea580c" textAnchor="middle" fontWeight={isSelected ? "bold" : "normal"}>{formatMoney(val)}</text>
+                                </g>
+                            );
+                        })}
+
+                        {Array.from({length: 12}).map((_, i) => {
+                            const x = (i / 11) * (chartWidth - sidePadding * 2) + sidePadding;
+                            const isSelected = selectedMonth === i;
+                            return (
+                                <text key={i} x={x} y={chartHeight - 5} fontSize="9" className={`${isSelected ? 'fill-orange-500 font-bold' : 'fill-gray-400 dark:fill-gray-500'}`} textAnchor="middle">{i+1}月</text>
+                            );
+                        })}
+                    </svg>
+                    
+                    <div className="flex justify-center gap-6 mt-1 text-xs">
+                        <div className="flex items-center gap-1.5"><div className="w-3 h-3 bg-teal-400 rounded-sm"></div><span className="text-gray-600 dark:text-gray-400">銷售數量</span></div>
+                        <div className="flex items-center gap-1.5"><div className="w-3 h-1 bg-orange-500 rounded-full"></div><span className="text-gray-600 dark:text-gray-400">當月總銷額</span></div>
+                    </div>
+                </div>
+            );
+        };
+
+        const PieChartComponent = ({ data, emptyMessage }) => {
+            const safeData = data || [];
+            const total = safeData.reduce((sum, item) => sum + item.value, 0);
+            if (total === 0) return <div className="text-center text-xs text-gray-400 py-4">{emptyMessage || "無銷售平台數據"}</div>;
+
+            let currentAngle = 0;
+            const gradientParts = safeData.map(item => {
+                const percentage = (item.value / total) * 100;
+                const endAngle = currentAngle + percentage;
+                const str = `${item.color} ${currentAngle}% ${endAngle}%`;
+                currentAngle = endAngle;
+                return str;
+            });
+            const gradientString = `conic-gradient(${gradientParts.join(', ')})`;
+
+            return (
+                <div className="w-[85%] mx-auto flex items-center gap-4 mt-4 animate-in fade-in duration-500">
+                    <div className="relative w-[40%] aspect-square shrink-0">
+                        <div className="w-full h-full rounded-full" style={{ background: gradientString }}></div>
+                        <div className="absolute inset-0 m-auto w-[65%] h-[65%] bg-white dark:bg-gray-800 rounded-full flex items-center justify-center flex-col shadow-inner transition-colors duration-300">
+                            <span className="text-[10px] text-gray-400">總銷量</span>
+                            <span className="text-2xl font-bold text-gray-800 dark:text-gray-200 leading-tight">{total}</span>
+                        </div>
+                    </div>
+                    <div className="flex-1 space-y-3 min-w-0">
+                        {safeData.map((item, idx) => (
+                            <div key={idx} className="flex items-center justify-between text-xs">
+                                <div className="flex items-center gap-2 min-w-0">
+                                    <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: item.color }}></div>
+                                    <span className="text-gray-600 dark:text-gray-300 truncate">{item.name}</span>
+                                </div>
+                                <div className="flex gap-1.5 shrink-0">
+                                    <span className="font-bold text-gray-800 dark:text-gray-200">{item.value}</span>
+                                    <span className="text-gray-400 dark:text-gray-500 w-8 text-right font-medium">{Math.round((item.value/total)*100)}%</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        // --- 頁面組件 ---
+        const ConfigContent = ({ onSaveUrl, onLoadJson, currentData, isDarkMode, setDarkMode, groups, setGroups }) => {
+            const [url, setUrl] = useState(localStorage.getItem('inventory_api_url') || DEFAULT_API_URL);
+            const [jsonInput, setJsonInput] = useState('');
+            const [error, setError] = useState('');
+
+            const handleSave = () => {
+                if (!url.startsWith('http')) { setError("請輸入有效的網址"); return; }
+                localStorage.setItem('inventory_api_url', url);
+                onSaveUrl(url);
+            };
+
+            const handleGroupNameChange = (id, newName) => {
+                setGroups(prevGroups => prevGroups.map(g => g.id === id ? { ...g, name: newName } : g));
+            };
+
+            const handleJsonParse = () => {
+                try {
+                    const data = JSON.parse(jsonInput);
+                    if (Array.isArray(data)) { onLoadJson(data); } 
+                    else { setError("JSON 格式錯誤：必須是 Array [...]"); }
+                } catch (e) { setError("JSON 解析失敗，請檢查格式"); }
+            };
+
+            return (
+                <div className="p-4 space-y-6 animate-in slide-in-from-right pb-24">
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3">
+                            <Moon className="w-4 h-4 text-purple-400" /> 外觀顯示
+                        </h3>
+                        <div className="flex items-center justify-between">
+                            <span className="text-sm text-gray-600 dark:text-gray-300">深色模式 (Dark Mode)</span>
+                            <button onClick={() => setDarkMode(!isDarkMode)} className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${isDarkMode ? 'bg-purple-500' : 'bg-gray-300'}`}>
+                                <div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isDarkMode ? 'translate-x-6' : ''}`}></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3">
+                            <Tags className="w-4 h-4 text-blue-500" /> 追蹤分組命名
+                        </h3>
+                        <div className="space-y-2">
+                            {groups.map(group => (
+                                <div key={group.id} className="flex items-center gap-2">
+                                    <div className={`w-4 h-4 rounded-full ${group.color.replace('text-', 'bg-')} shrink-0`}></div>
+                                    <input type="text" value={group.name} onChange={(e) => handleGroupNameChange(group.id, e.target.value)} className="flex-1 p-2 bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-200 dark:border-gray-600 rounded-lg text-sm transition-colors" placeholder={`分組 ${group.id}`} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3">
+                            <LinkIcon className="w-4 h-4 text-blue-500" /> 連接 Google Sheet
+                        </h3>
+                        <div className="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg mb-3">
+                            <p className="text-xs text-blue-800 dark:text-blue-300 mb-2 font-bold">API 網址：</p>
+                            <input type="text" value={url} onChange={e => setUrl(e.target.value)} className="w-full p-2 mt-1 text-[10px] border border-blue-200 dark:border-blue-800 rounded bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 font-mono" placeholder="請貼上您的 Google Script 網址" />
+                        </div>
+                        {error && <div className="text-red-500 text-xs mb-3">{error}</div>}
+                        <button onClick={handleSave} className="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-700 active:scale-95 transition">
+                            <RefreshCw className="w-4 h-4" /> 儲存並同步
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        const ProductList = ({ data, visibleColumns, onOpenWatchlistModal, watchlistState, watchlistGroups, onSelectProduct }) => (
+            <div className="p-4 space-y-3 pb-20">
+                {data.map((p, index) => {
+                    const isWatched = watchlistState && watchlistState.hasOwnProperty(p.id);
+                    const groupId = isWatched ? watchlistState[p.id] : null;
+                    const groupInfo = watchlistGroups.find(g => g.id === groupId);
+
+                    return (
+                        <div key={p.id ? `${p.id}-${index}` : `item-${index}`} onClick={() => onSelectProduct(p)} className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex justify-between items-center active:scale-98 transition-transform cursor-pointer hover:shadow-md">
+                            <div className="min-w-0 flex-1 mr-4">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="text-[10px] bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded">{p.brand}</span>
+                                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${p.totalStock > 0 ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'}`}>
+                                        {p.totalStock > 0 ? '現貨' : '缺貨'}
+                                    </span>
+                                </div>
+                                <h3 className="font-bold text-gray-800 dark:text-white truncate">{p.name}</h3>
+                                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{p.id || '無編號'}</p>
+                            </div>
+                            <div className="text-right shrink-0 flex flex-col items-end gap-2">
+                                <button onClick={(e) => { e.stopPropagation(); onOpenWatchlistModal(p.id); }} className="p-1 -mr-1">
+                                    <Star className={`w-5 h-5 ${isWatched ? (groupInfo?.iconColor || 'fill-yellow-400 text-yellow-400') : 'text-gray-300 dark:text-gray-600'}`} />
+                                </button>
+                                <div className="flex flex-col items-end gap-1">
+                                    {visibleColumns.stock && ( <div className="flex flex-col items-end"> <div className="text-lg font-bold text-blue-600 dark:text-blue-400 leading-none">{p.totalStock}</div> <div className="text-[9px] text-gray-400">庫存</div> </div> )}
+                                    {visibleColumns.price && ( <div className="flex flex-col items-end"> <div className="text-sm font-bold text-gray-700 dark:text-gray-200 leading-none">${p.price?.toLocaleString()}</div> <div className="text-[9px] text-gray-400">售價</div> </div> )}
+                                    {visibleColumns.cost && ( <div className="flex flex-col items-end"> <div className="text-sm font-bold text-red-500 dark:text-red-400 leading-none">${p.cost?.toLocaleString()}</div> <div className="text-[9px] text-gray-400">成本</div> </div> )}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+                {data.length === 0 && <div className="text-center text-gray-400 mt-10"><Package className="w-12 h-12 mx-auto mb-2 opacity-20" /><p>找不到符合的商品</p></div>}
+            </div>
+        );
+
+        // --- 主程式 ---
+        const InventoryApp = () => {
+            const [activeTab, setActiveTab] = useState('search');
+            const [searchQuery, setSearchQuery] = useState('');
+            const [selectedProduct, setSelectedProduct] = useState(null);
+            
+            const [watchlistGroups, setWatchlistGroups] = useState(() => {
+                try { const saved = localStorage.getItem('inventory_groups'); return saved ? JSON.parse(saved) : DEFAULT_GROUPS; } 
+                catch (e) { return DEFAULT_GROUPS; }
+            });
+            useEffect(() => { localStorage.setItem('inventory_groups', JSON.stringify(watchlistGroups)); }, [watchlistGroups]);
+
+            const [watchlist, setWatchlist] = useState(() => {
+                try { const saved = localStorage.getItem('inventory_watchlist'); return saved ? JSON.parse(saved) : {'B00466308': 2}; } 
+                catch (e) { return {'B00466308': 2}; }
+            });
+            useEffect(() => { localStorage.setItem('inventory_watchlist', JSON.stringify(watchlist)); }, [watchlist]);
+
+            const [activeWatchlistGroup, setActiveWatchlistGroup] = useState(1); 
+            const [showWatchlistModal, setShowWatchlistModal] = useState(null); 
+            const [selectedMonth, setSelectedMonth] = useState(null);
+            const [visibleColumns, setVisibleColumns] = useState(() => {
+                try { const saved = localStorage.getItem('inventory_visible_columns'); return saved ? JSON.parse(saved) : { stock: true, price: false, cost: false }; } 
+                catch (e) { return { stock: true, price: false, cost: false }; }
+            });
+            useEffect(() => { localStorage.setItem('inventory_visible_columns', JSON.stringify(visibleColumns)); }, [visibleColumns]);
+
+            const [isDarkMode, setIsDarkMode] = useState(() => {
+                try { const saved = localStorage.getItem('app_dark_mode'); return saved === 'true'; } 
+                catch(e) { return false; }
+            });
+            useEffect(() => { localStorage.setItem('app_dark_mode', isDarkMode); }, [isDarkMode]);
+            useEffect(() => { setSelectedMonth(null); }, [selectedProduct]);
+
+            const currentPieData = useMemo(() => {
+                if (!selectedProduct) return [];
+                const p = selectedProduct;
+                if (selectedMonth !== null) {
+                    if (p.monthlySalesPlatform && p.monthlySalesPlatform[selectedMonth]) return p.monthlySalesPlatform[selectedMonth];
+                    return [];
+                }
+                return p.salesPlatform || [];
+            }, [selectedProduct, selectedMonth]);
+
+            const [products, setProducts] = useState(() => {
+                try {
+                    const cached = localStorage.getItem('inventory_data_cache');
+                    if (cached) {
+                        const parsed = JSON.parse(cached);
+                        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                    }
+                } catch(e) {}
+                return MOCK_DATA;
+            });
+
+            const [loading, setLoading] = useState(false); // 只有當完全沒資料時才顯示 loading 遮罩
+            const [isSyncing, setIsSyncing] = useState(false); // 背景同步狀態
+            const [lastSync, setLastSync] = useState(() => localStorage.getItem('inventory_last_sync_time') || null);
+            const [syncError, setSyncError] = useState(null);
+
+            // 修改後的 fetchFromUrl，支援背景同步模式
+            const fetchFromUrl = async (url, isBackground = false) => {
+                if (isBackground) {
+                    setIsSyncing(true);
+                } else {
+                    setLoading(true);
+                }
+                setSyncError(null);
+                
+                try {
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+                    const text = await res.text();
+                    let data;
+                    try { data = JSON.parse(text); } catch (e) { throw new Error("無法解析資料"); }
+                    
+                    if (data && data.error) throw new Error(`Script Error: ${data.error}`);
+                    
+                    if (Array.isArray(data)) {
+                        setProducts(data);
+                        const timeString = new Date().toLocaleTimeString();
+                        setLastSync(timeString);
+                        localStorage.setItem('inventory_data_cache', JSON.stringify(data));
+                        localStorage.setItem('inventory_last_sync_time', timeString);
+                    } else { 
+                        throw new Error("資料格式錯誤 (非 Array)"); 
+                    }
+                } catch (error) { 
+                    setSyncError(error.message); 
+                    // 如果是背景同步失敗，不覆蓋舊資料，僅顯示錯誤
+                    if (!isBackground && products === MOCK_DATA) {
+                        // 僅在初始化且無資料時才設為 MOCK
+                    }
+                } finally { 
+                    setLoading(false); 
+                    setIsSyncing(false);
+                }
+            };
+
+            // 初始化 Effect
+            useEffect(() => {
+                // 檢查是否已有資料
+                const hasLocalData = products !== MOCK_DATA && products.length > 0;
+                const targetUrl = localStorage.getItem('inventory_api_url') || DEFAULT_API_URL;
+                
+                if (targetUrl) {
+                    // 如果有資料，執行背景同步 (isBackground = true)
+                    // 如果沒資料，執行阻擋式載入 (isBackground = false)
+                    fetchFromUrl(targetUrl, hasLocalData);
+                }
+            }, []); // 空依賴陣列確保只執行一次
+
+            const handleLoadJson = (data) => {
+                setProducts(data);
+                localStorage.setItem('inventory_data_cache', JSON.stringify(data));
+                setLastSync('手動匯入');
+            };
+
+            const filteredProducts = useMemo(() => {
+                if (!searchQuery) return products;
+                const lowerQuery = searchQuery.toLowerCase();
+                return products.filter(p => 
+                    (p.id && p.id.toString().toLowerCase().includes(lowerQuery)) || 
+                    (p.name && p.name.toLowerCase().includes(lowerQuery)) ||
+                    (p.brand && p.brand.toLowerCase().includes(lowerQuery))
+                );
+            }, [products, searchQuery]);
+
+            const watchlistProducts = useMemo(() => {
+                return products.filter(p => {
+                    const groupId = watchlist[p.id];
+                    return groupId === activeWatchlistGroup;
+                });
+            }, [products, watchlist, activeWatchlistGroup]);
+
+            const handleWatchlistUpdate = (productId, groupId) => {
+                setWatchlist(prev => {
+                    const next = { ...prev };
+                    if (groupId === null) delete next[productId]; else next[productId] = groupId;
+                    return next;
+                });
+                setShowWatchlistModal(null);
+            };
+
+            if (selectedProduct) {
+                const p = selectedProduct;
+                const isWatched = watchlist.hasOwnProperty(p.id);
+                const watchedGroupId = watchlist[p.id];
+                const watchedGroup = watchlistGroups.find(g => g.id === watchedGroupId);
+                let avgPrice = 0;
+                if (p.salesTrend && p.priceTrend && p.totalYearSales > 0) {
+                    const totalRevenue = p.salesTrend.reduce((acc, qty, idx) => acc + (qty * (p.priceTrend[idx] || 0)), 0);
+                    avgPrice = Math.round(totalRevenue / p.totalYearSales);
+                }
+
+                return (
+                    <div className={isDarkMode ? "dark" : ""}>
+                        <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900 max-w-md mx-auto shadow-2xl overflow-hidden font-sans animate-in slide-in-from-right duration-200 transition-colors duration-300 relative">
+                            {showWatchlistModal === p.id && (
+                                <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
+                                    <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
+                                        <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
+                                        {watchlistGroups.map(group => (
+                                            <button key={group.id} onClick={() => handleWatchlistUpdate(p.id, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${watchedGroupId === group.id ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
+                                                <span className={`font-bold ${group.color}`}>{group.name}</span>
+                                                {watchedGroupId === group.id && <Check className="w-4 h-4 text-blue-500" />}
+                                            </button>
+                                        ))}
+                                        {isWatched && <button onClick={() => handleWatchlistUpdate(p.id, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
+                                        <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="bg-white dark:bg-gray-800 px-4 py-3 shadow-sm flex items-center gap-3 sticky top-0 z-10 border-b border-gray-100 dark:border-gray-700">
+                                <button onClick={() => setSelectedProduct(null)} className="p-1 -ml-2"><ArrowLeft className="text-gray-600 dark:text-gray-300" /></button>
+                                <div className="flex-1 min-w-0"><h1 className="font-bold text-lg truncate text-gray-800 dark:text-white">{p.name}</h1><p className="text-xs text-gray-500 dark:text-gray-400">{p.id} • {p.brand}</p></div>
+                                <button onClick={() => setShowWatchlistModal(p.id)}><Star className={`w-6 h-6 ${isWatched ? (watchedGroup?.iconColor || 'fill-yellow-400 text-yellow-400') : 'text-gray-300 dark:text-gray-600'}`} /></button>
+                            </div>
+                            <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20">
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div><span className={`text-xs font-bold px-2 py-1 rounded-md ${p.status === '缺貨中' ? 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'}`}>{p.status}</span><div className="mt-2 text-3xl font-bold text-gray-800 dark:text-white">{p.totalStock}</div><div className="text-xs text-gray-400">總庫存量</div></div>
+                                        <div className="text-right space-y-1"><div className="text-xs text-gray-500 dark:text-gray-400">最後出貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastShipDate}</span></div><div className="text-xs text-gray-500 dark:text-gray-400">最後進貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastPurchaseDate}</span></div></div>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-2 py-3 border-t border-gray-100 dark:border-gray-700">
+                                        <div className="text-center"><div className="text-lg font-bold text-orange-500">{p.stats?.orderedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已訂未出</div></div>
+                                        <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-green-600 dark:text-green-400">{p.stats?.purchasedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已採未進</div></div>
+                                        <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-gray-600 dark:text-gray-300">{p.stats?.unshippedIn || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">未進貨量</div></div>
+                                    </div>
+                                </div>
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><MapPin className="w-4 h-4" /> 倉庫分佈</h3>
+                                    <div className="max-h-48 overflow-y-auto"><table className="w-full text-sm"><thead className="text-gray-500 dark:text-gray-400 text-xs border-b dark:border-gray-700"><tr><th className="text-left py-2 font-normal">倉庫名稱</th><th className="text-right py-2 font-normal">數量</th></tr></thead><tbody className="divide-y divide-gray-50 dark:divide-gray-700">{p.warehouses && Object.keys(p.warehouses).length > 0 ? (Object.entries(p.warehouses).filter(([name]) => !['已訂未出', '已採未進', '未進貨量', '訂單數量', '庫存小計', '備註'].includes(name)).sort(([,a], [,b]) => b - a).map(([whName, qty]) => (<tr key={whName} className={qty > 0 ? "bg-blue-50/30 dark:bg-blue-900/20" : ""}><td className="py-2 text-gray-700 dark:text-gray-300">{whName}</td><td className={`py-2 text-right font-medium ${qty > 0 ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-600"}`}>{qty}</td></tr>))) : (<tr><td colSpan="2" className="py-4 text-center text-gray-400 text-xs">無倉庫庫存資料</td></tr>)}</tbody></table></div>
+                                </div>
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><DollarSign className="w-4 h-4" /> 價格與成本結構</h3>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg border border-gray-100 dark:border-gray-600"><div className="text-[10px] text-gray-500 dark:text-gray-400 mb-1">建議售價</div><div className="font-bold text-gray-600 dark:text-gray-300 line-through decoration-gray-400 text-sm">${p.msrp?.toLocaleString() || '-'}</div></div>
+                                        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800"><div className="text-[10px] text-blue-600 dark:text-blue-400 mb-1">一般售價</div><div className="font-bold text-blue-700 dark:text-blue-300 text-lg">${p.price?.toLocaleString() || '-'}</div></div>
+                                        <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-100 dark:border-red-800"><div className="text-[10px] text-red-600 dark:text-red-400 mb-1">一般成本</div><div className="font-bold text-red-700 dark:text-red-300">${p.cost?.toLocaleString() || '-'}</div></div>
+                                        <div className={`p-3 rounded-lg border ${p.specialCost ? 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800' : 'bg-gray-50 border-gray-100 dark:bg-gray-700/30 dark:border-gray-600'}`}><div className={`text-[10px] mb-1 ${p.specialCost ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>特殊成本</div><div className={`font-bold ${p.specialCost ? 'text-orange-700 dark:text-orange-300' : 'text-gray-300 dark:text-gray-500'}`}>{p.specialCost ? `$${p.specialCost.toLocaleString()}` : 'N/A'}</div></div>
+                                    </div>
+                                </div>
+                                {p.note && (<div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4 shadow-sm border border-yellow-100 dark:border-yellow-800 flex gap-3"><AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 shrink-0 mt-0.5" /><div><h4 className="text-xs font-bold text-yellow-700 dark:text-yellow-400 mb-1">商品備註</h4><p className="text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">{p.note}</p></div></div>)}
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> 銷售分析</h3>
+                                    <div className="grid grid-cols-3 gap-2 mb-2 text-center divide-x divide-gray-100 dark:divide-gray-700">
+                                        <div className="text-left px-1"><span className="block text-xl font-bold text-red-600 dark:text-red-400">{p.totalYearSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">年總銷量</span></div>
+                                        <div className="px-1"><span className="block text-xl font-bold text-gray-700 dark:text-gray-300">{p.avgMonthSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均月銷</span></div>
+                                        <div className="text-right px-1"><span className="block text-xl font-bold text-orange-500 dark:text-orange-400">${avgPrice.toLocaleString()}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均成交價</span></div>
+                                    </div>
+                                    <DualAxisChart salesData={p.salesTrend} priceData={p.priceTrend} selectedMonth={selectedMonth} onMonthSelect={setSelectedMonth} />
+                                    <div className="mt-8 border-t border-gray-100 dark:border-gray-700 pt-4">
+                                        <div className="flex justify-between items-center mb-2"><h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 flex items-center gap-2"><PieChart className="w-4 h-4" /> {selectedMonth !== null ? `${selectedMonth + 1}月平台佔比` : "全年度平台佔比"}</h4>{selectedMonth !== null && (<button onClick={() => setSelectedMonth(null)} className="text-[10px] flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"><RotateCcw className="w-3 h-3" /> 重置總覽</button>)}</div>
+                                        <PieChartComponent data={currentPieData} emptyMessage={selectedMonth !== null ? "此月份無銷售數據" : "無銷售平台數據"} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className={isDarkMode ? "dark" : ""}>
+                    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900 max-w-md mx-auto shadow-2xl overflow-hidden font-sans transition-colors duration-300 relative">
+                        {showWatchlistModal && (
+                            <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
+                                <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
+                                    <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
+                                    {watchlistGroups.map(group => {
+                                        const isSelected = watchlist[showWatchlistModal] === group.id;
+                                        return (
+                                            <button key={group.id} onClick={() => handleWatchlistUpdate(showWatchlistModal, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${isSelected ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
+                                                <div className="flex items-center gap-3"><div className={`w-3 h-3 rounded-full ${group.color.replace('text-', 'bg-')}`}></div><span className={`font-bold ${group.color}`}>{group.name}</span></div>{isSelected && <Check className="w-4 h-4 text-blue-500" />}
+                                            </button>
+                                        );
+                                    })}
+                                    {watchlist.hasOwnProperty(showWatchlistModal) && <button onClick={() => handleWatchlistUpdate(showWatchlistModal, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
+                                    <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'search' && (
+                            <div className="bg-white dark:bg-gray-800 p-4 pb-2 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700">
+                                <div className="flex justify-between items-center mb-3"><h1 className="text-xl font-bold text-gray-800 dark:text-white">庫存查詢系統</h1><div className="text-[10px] text-gray-400 flex items-center gap-1">{isSyncing && <RefreshCw className="w-3 h-3 animate-spin text-blue-500" />}{isSyncing ? "更新中..." : (lastSync ? `更新: ${lastSync}` : "")}</div></div>
+                                <div className="relative mb-3"><Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" /><input type="text" placeholder="輸入編號、名稱或品牌..." className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-400" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /></div>
+                                <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+                                    <div className="flex items-center gap-1 pr-2 border-r border-gray-200 dark:border-gray-700 shrink-0"><Eye className="w-3 h-3 text-gray-400" /><span className="text-[10px] text-gray-500 dark:text-gray-400">顯示:</span></div>
+                                    {[{ key: 'stock', label: '庫存' }, { key: 'price', label: '售價' }, { key: 'cost', label: '成本' }].map(opt => (<button key={opt.key} onClick={() => setVisibleColumns(prev => ({ ...prev, [opt.key]: !prev[opt.key] }))} className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs border transition-colors ${visibleColumns[opt.key] ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300' : 'bg-transparent border-gray-200 text-gray-500 dark:border-gray-700 dark:text-gray-400'}`}>{visibleColumns[opt.key] && <Check className="w-3 h-3" />}{opt.label}</button>))}
+                                </div>
+                                {syncError && <div className="mt-1 text-[10px] text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> 同步異常 (請檢查設定)</div>}
+                            </div>
+                        )}
+
+                        {activeTab === 'watchlist' && (
+                            <div className="bg-white dark:bg-gray-800 p-0 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700">
+                                <div className="p-4 pb-2">
+                                    <h1 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3"><Star className="w-6 h-6 fill-yellow-400 text-yellow-400" /> 重點追蹤清單</h1>
+                                    <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                                        {watchlistGroups.map(group => {
+                                            const isActive = activeWatchlistGroup === group.id;
+                                            const count = Object.values(watchlist).filter(gid => gid === group.id).length;
+                                            return (
+                                                <button key={group.id} onClick={() => setActiveWatchlistGroup(group.id)} className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${isActive ? `${group.bg} ${group.color} dark:bg-opacity-20 border border-transparent` : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400 border border-transparent'}`}>
+                                                    {group.name}<span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/50' : 'bg-gray-200 dark:bg-gray-600'}`}>{count}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'config' && (
+                            <div className="bg-white dark:bg-gray-800 p-4 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700">
+                                <h1 className="text-xl font-bold text-gray-800 dark:text-white">系統設定</h1>
+                            </div>
+                        )}
+
+                        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900">
+                            {activeTab === 'search' && <ProductList data={filteredProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={setSelectedProduct} />}
+                            {activeTab === 'watchlist' && <ProductList data={watchlistProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={setSelectedProduct} />}
+                            {activeTab === 'config' && <ConfigContent onSaveUrl={fetchFromUrl} onLoadJson={handleLoadJson} currentData={products} isDarkMode={isDarkMode} setDarkMode={setIsDarkMode} groups={watchlistGroups} setGroups={setWatchlistGroups} />}
+                            {loading && (<div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-50 flex items-center justify-center flex-col"><RefreshCw className="w-10 h-10 text-blue-600 animate-spin mb-2" /><span className="text-gray-600 dark:text-gray-300 font-bold">資料同步中...</span></div>)}
+                        </div>
+
+                        <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center p-2 pb-safe">
+                            <button onClick={() => setActiveTab('search')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'search' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Search className="w-6 h-6" /><span className="text-[10px] font-medium">查詢</span></button>
+                            <button onClick={() => setActiveTab('watchlist')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'watchlist' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Star className={`w-6 h-6 ${activeTab === 'watchlist' && Object.keys(watchlist).length > 0 ? 'fill-current' : ''}`} /><span className="text-[10px] font-medium">追蹤</span></button>
+                            <button onClick={() => setActiveTab('config')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'config' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Settings className="w-6 h-6" /><span className="text-[10px] font-medium">設定</span></button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<InventoryApp />);
+    </script>
+</body>
+</html>
