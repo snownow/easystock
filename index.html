@@ -430,6 +430,22 @@
             const [searchQuery, setSearchQuery] = useState('');
             const [selectedProduct, setSelectedProduct] = useState(null);
             
+            // PWA Install Prompt
+            const [deferredPrompt, setDeferredPrompt] = useState(null);
+            const [isLineBrowser, setIsLineBrowser] = useState(false);
+
+            useEffect(() => {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    setDeferredPrompt(e);
+                });
+
+                // 偵測是否為 LINE 瀏覽器
+                if (navigator.userAgent.match(/Line/i)) {
+                    setIsLineBrowser(true);
+                }
+            }, []);
+
             const [watchlistGroups, setWatchlistGroups] = useState(() => {
                 try { const saved = localStorage.getItem('inventory_groups'); return saved ? JSON.parse(saved) : DEFAULT_GROUPS; } 
                 catch (e) { return DEFAULT_GROUPS; }
