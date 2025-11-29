@@ -10,8 +10,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href='data:application/manifest+json;base64,eyJuYW1lIjoi5bqr5a2Y6Yq35ZSu57O757WxIiwic2hvcnRfbmFtZSI6IuW6q+WtmOezu+e1sSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjM2I4MmY2IiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vdW5wa2cuY29tL2x1Y2lkZS1zdGF0aWNAbGF0ZXN0L2ljb25zL3BhY2thZ2Uuc3ZnIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19' />
+    <!-- PWA Manifest (更新圖示設定以符合 Chrome 安裝標準) -->
+    <link rel="manifest" href='data:application/manifest+json;base64,eyJuYW1lIjoi5bqr5a2Y6Yq35ZSu57O757WxIiwic2hvcnRfbmFtZSI6IuW6q+WtmOezu+e1sSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjM2I4MmY2IiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vdW5wa2cuY29tL2x1Y2lkZS1zdGF0aWNAbGF0ZXN0L2ljb25zL3BhY2thZ2Uuc3ZnIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJwdXJwb3NlIjoiYW55IG1hc2thYmxlIn1dfQ==' />
 
     <!-- 載入核心函式庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -38,11 +38,13 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* 防止 iOS 點擊閃爍 */
         * { -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden">
-    <div id="root"></div>
+<!-- 修改：使用 h-[100dvh] 解決手機瀏覽器導航列遮擋問題 -->
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden h-[100dvh] w-screen">
+    <div id="root" class="h-full w-full"></div>
 
     <!-- React 應用程式邏輯 -->
     <script type="text/babel">
@@ -90,7 +92,8 @@
             RotateCcw: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
             Tags: '<path d="m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19a2.4 2.4 0 0 1-3.4 0L7.3 12.7A2 2 0 0 1 7 11.3V5a2 2 0 0 1 2-2h6.3a2 2 0 0 1 1.4.6Z"/><path d="M9 7h.01"/><path d="M3 7v4.3c0 .5.2 1 .6 1.4L12 21"/>',
             Bug: '<rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2"/><path d="m5 7 3 2"/><path d="m19 19-3-2"/><path d="m5 19 3-2"/><path d="M20 13h-4"/><path d="M4 13h4"/><path d="m10 4 1 2"/><path d="m14 4-1 2"/>',
-            Edit3: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>'
+            Edit3: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+            Smartphone: '<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>'
         };
 
         const Icons = Object.keys(ICONS_PATH).reduce((acc, key) => {
@@ -102,11 +105,11 @@
             Search, Package, TrendingUp, MapPin, Star, ArrowLeft, 
             BarChart3, PieChart, LayoutGrid, FileText, DollarSign, 
             AlertCircle, Settings, RefreshCw, Download, Link: LinkIcon, 
-            Moon, Sun, Eye, Check, X, RotateCcw, Tags, Bug, Edit3
+            Moon, Sun, Eye, Check, X, RotateCcw, Tags, Bug, Edit3, Smartphone
         } = Icons;
 
         // --- 設定與資料 ---
-        const DEFAULT_API_URL = ""; // 機密連結已移除，請在 APP 內設定
+        const DEFAULT_API_URL = ""; 
 
         const DEFAULT_GROUPS = [
             { id: 1, name: '分組 1', color: 'text-red-500', bg: 'bg-red-50', darkColor: 'text-red-400', darkBg: 'dark:bg-red-900/30', iconColor: 'fill-red-500 text-red-500' },
@@ -268,7 +271,7 @@
         };
 
         // --- 頁面組件 ---
-        const ConfigContent = ({ onSaveUrl, onLoadJson, currentData, isDarkMode, setDarkMode, groups, setGroups }) => {
+        const ConfigContent = ({ onSaveUrl, onLoadJson, currentData, isDarkMode, setDarkMode, groups, setGroups, installEvent }) => {
             const [url, setUrl] = useState(localStorage.getItem('inventory_api_url') || DEFAULT_API_URL);
             const [jsonInput, setJsonInput] = useState('');
             const [error, setError] = useState('');
@@ -282,17 +285,36 @@
             const handleGroupNameChange = (id, newName) => {
                 setGroups(prevGroups => prevGroups.map(g => g.id === id ? { ...g, name: newName } : g));
             };
-
-            const handleJsonParse = () => {
-                try {
-                    const data = JSON.parse(jsonInput);
-                    if (Array.isArray(data)) { onLoadJson(data); } 
-                    else { setError("JSON 格式錯誤：必須是 Array [...]"); }
-                } catch (e) { setError("JSON 解析失敗，請檢查格式"); }
+            
+            const handleInstall = async () => {
+                if (!installEvent) return;
+                installEvent.prompt();
+                const { outcome } = await installEvent.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
             };
 
             return (
                 <div className="p-4 space-y-6 animate-in slide-in-from-right pb-24">
+                    
+                    {/* 安裝提示 (僅在 Chrome 支援且未安裝時顯示) */}
+                    {installEvent && (
+                        <div className="bg-blue-600 p-4 rounded-xl shadow-lg flex items-center justify-between text-white">
+                            <div className="flex items-center gap-3">
+                                <div className="bg-white/20 p-2 rounded-lg"><Smartphone className="w-6 h-6" /></div>
+                                <div>
+                                    <h3 className="font-bold text-sm">安裝應用程式</h3>
+                                    <p className="text-[10px] opacity-80">獲得更佳的全螢幕體驗</p>
+                                </div>
+                            </div>
+                            <button 
+                                onClick={handleInstall}
+                                className="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-100 active:scale-95 transition"
+                            >
+                                安裝
+                            </button>
+                        </div>
+                    )}
+                    
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                         <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3">
                             <Moon className="w-4 h-4 text-purple-400" /> 外觀顯示
@@ -378,6 +400,16 @@
             const [searchQuery, setSearchQuery] = useState('');
             const [selectedProduct, setSelectedProduct] = useState(null);
             
+            // PWA Install Prompt
+            const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+            useEffect(() => {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    setDeferredPrompt(e);
+                });
+            }, []);
+
             const [watchlistGroups, setWatchlistGroups] = useState(() => {
                 try { const saved = localStorage.getItem('inventory_groups'); return saved ? JSON.parse(saved) : DEFAULT_GROUPS; } 
                 catch (e) { return DEFAULT_GROUPS; }
@@ -427,12 +459,11 @@
                 return MOCK_DATA;
             });
 
-            const [loading, setLoading] = useState(false); // 只有當完全沒資料時才顯示 loading 遮罩
-            const [isSyncing, setIsSyncing] = useState(false); // 背景同步狀態
+            const [loading, setLoading] = useState(false); 
+            const [isSyncing, setIsSyncing] = useState(false); 
             const [lastSync, setLastSync] = useState(() => localStorage.getItem('inventory_last_sync_time') || null);
             const [syncError, setSyncError] = useState(null);
 
-            // 修改後的 fetchFromUrl，支援背景同步模式
             const fetchFromUrl = async (url, isBackground = false) => {
                 if (isBackground) {
                     setIsSyncing(true);
@@ -461,28 +492,21 @@
                     }
                 } catch (error) { 
                     setSyncError(error.message); 
-                    // 如果是背景同步失敗，不覆蓋舊資料，僅顯示錯誤
-                    if (!isBackground && products === MOCK_DATA) {
-                        // 僅在初始化且無資料時才設為 MOCK
-                    }
+                    if (!isBackground && products === MOCK_DATA) { }
                 } finally { 
                     setLoading(false); 
                     setIsSyncing(false);
                 }
             };
 
-            // 初始化 Effect
             useEffect(() => {
-                // 檢查是否已有資料
                 const hasLocalData = products !== MOCK_DATA && products.length > 0;
                 const targetUrl = localStorage.getItem('inventory_api_url') || DEFAULT_API_URL;
                 
                 if (targetUrl) {
-                    // 如果有資料，執行背景同步 (isBackground = true)
-                    // 如果沒資料，執行阻擋式載入 (isBackground = false)
                     fetchFromUrl(targetUrl, hasLocalData);
                 }
-            }, []); // 空依賴陣列確保只執行一次
+            }, []); 
 
             const handleLoadJson = (data) => {
                 setProducts(data);
@@ -656,7 +680,7 @@
                         <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900">
                             {activeTab === 'search' && <ProductList data={filteredProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={setSelectedProduct} />}
                             {activeTab === 'watchlist' && <ProductList data={watchlistProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={setSelectedProduct} />}
-                            {activeTab === 'config' && <ConfigContent onSaveUrl={fetchFromUrl} onLoadJson={handleLoadJson} currentData={products} isDarkMode={isDarkMode} setDarkMode={setIsDarkMode} groups={watchlistGroups} setGroups={setWatchlistGroups} />}
+                            {activeTab === 'config' && <ConfigContent onSaveUrl={fetchFromUrl} onLoadJson={handleLoadJson} currentData={products} isDarkMode={isDarkMode} setDarkMode={setIsDarkMode} groups={watchlistGroups} setGroups={setWatchlistGroups} installEvent={deferredPrompt} />}
                             {loading && (<div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-50 flex items-center justify-center flex-col"><RefreshCw className="w-10 h-10 text-blue-600 animate-spin mb-2" /><span className="text-gray-600 dark:text-gray-300 font-bold">資料同步中...</span></div>)}
                         </div>
 
