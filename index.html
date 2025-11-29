@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>庫存銷售系統</title>
     
     <!-- PWA 設定 -->
@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
     
-    <!-- PWA Manifest (更新圖示設定以符合 Chrome 安裝標準) -->
+    <!-- PWA Manifest -->
     <link rel="manifest" href='data:application/manifest+json;base64,eyJuYW1lIjoi5bqr5a2Y6Yq35ZSu57O757WxIiwic2hvcnRfbmFtZSI6IuW6q+WtmOezu+e1sSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjM2I4MmY2IiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vdW5wa2cuY29tL2x1Y2lkZS1zdGF0aWNAbGF0ZXN0L2ljb25zL3BhY2thZ2Uuc3ZnIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJwdXJwb3NlIjoiYW55IG1hc2thYmxlIn1dfQ==' />
 
     <!-- 載入核心函式庫 -->
@@ -40,9 +40,11 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         /* 防止 iOS 點擊閃爍 */
         * { -webkit-tap-highlight-color: transparent; }
+        /* 禁止下拉刷新，避免影響 APP 體驗 */
+        body { overscroll-behavior-y: none; }
     </style>
 </head>
-<!-- 修改：使用 h-[100dvh] 解決手機瀏覽器導航列遮擋問題 -->
+<!-- 修改：body 使用 h-[100dvh] (動態高度) 並禁止溢位 -->
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden h-[100dvh] w-screen">
     <div id="root" class="h-full w-full"></div>
 
@@ -93,7 +95,8 @@
             Tags: '<path d="m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19a2.4 2.4 0 0 1-3.4 0L7.3 12.7A2 2 0 0 1 7 11.3V5a2 2 0 0 1 2-2h6.3a2 2 0 0 1 1.4.6Z"/><path d="M9 7h.01"/><path d="M3 7v4.3c0 .5.2 1 .6 1.4L12 21"/>',
             Bug: '<rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2"/><path d="m5 7 3 2"/><path d="m19 19-3-2"/><path d="m5 19 3-2"/><path d="M20 13h-4"/><path d="M4 13h4"/><path d="m10 4 1 2"/><path d="m14 4-1 2"/>',
             Edit3: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
-            Smartphone: '<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>'
+            Smartphone: '<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>',
+            ExternalLink: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/>'
         };
 
         const Icons = Object.keys(ICONS_PATH).reduce((acc, key) => {
@@ -105,7 +108,7 @@
             Search, Package, TrendingUp, MapPin, Star, ArrowLeft, 
             BarChart3, PieChart, LayoutGrid, FileText, DollarSign, 
             AlertCircle, Settings, RefreshCw, Download, Link: LinkIcon, 
-            Moon, Sun, Eye, Check, X, RotateCcw, Tags, Bug, Edit3, Smartphone
+            Moon, Sun, Eye, Check, X, RotateCcw, Tags, Bug, Edit3, Smartphone, ExternalLink
         } = Icons;
 
         // --- 設定與資料 ---
@@ -271,7 +274,7 @@
         };
 
         // --- 頁面組件 ---
-        const ConfigContent = ({ onSaveUrl, onLoadJson, currentData, isDarkMode, setDarkMode, groups, setGroups, installEvent }) => {
+        const ConfigContent = ({ onSaveUrl, onLoadJson, currentData, isDarkMode, setDarkMode, groups, setGroups, installEvent, isLineBrowser }) => {
             const [url, setUrl] = useState(localStorage.getItem('inventory_api_url') || DEFAULT_API_URL);
             const [jsonInput, setJsonInput] = useState('');
             const [error, setError] = useState('');
@@ -296,6 +299,21 @@
             return (
                 <div className="p-4 space-y-6 animate-in slide-in-from-right pb-24">
                     
+                    {/* LINE 警告 */}
+                    {isLineBrowser && (
+                        <div className="bg-orange-50 border border-orange-200 p-4 rounded-xl shadow-sm flex flex-col gap-2">
+                            <div className="flex items-center gap-2 text-orange-700 font-bold">
+                                <AlertCircle className="w-5 h-5" />
+                                <span>檢測到 LINE 瀏覽器</span>
+                            </div>
+                            <p className="text-sm text-orange-800">LINE 內建瀏覽器不支援安裝 APP，且可能導致版面異常。</p>
+                            <div className="text-xs text-orange-600 bg-orange-100 p-2 rounded mt-1">
+                                請點擊右上角 <span className="font-bold">⋮</span> 或 <span className="font-bold">↗</span>，選擇<br/>
+                                <span className="font-bold flex items-center gap-1 mt-1"><ExternalLink className="w-3 h-3"/> 以預設瀏覽器開啟</span>
+                            </div>
+                        </div>
+                    )}
+
                     {/* 安裝提示 (僅在 Chrome 支援且未安裝時顯示) */}
                     {installEvent && (
                         <div className="bg-blue-600 p-4 rounded-xl shadow-lg flex items-center justify-between text-white">
@@ -312,6 +330,19 @@
                             >
                                 安裝
                             </button>
+                        </div>
+                    )}
+                    
+                    {/* 手動安裝教學 (當沒有自動安裝按鈕時顯示) */}
+                    {!installEvent && !isLineBrowser && (
+                        <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                            <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-2">
+                                <Smartphone className="w-4 h-4 text-gray-500" /> 如何安裝到手機？
+                            </h3>
+                            <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
+                                <li><strong>Android (Chrome):</strong> 點擊瀏覽器右上角選單 ⋮ &gt; 「加到主畫面」或「安裝應用程式」。</li>
+                                <li><strong>iPhone (Safari):</strong> 點擊下方分享按鈕 <span className="inline-block border border-gray-400 rounded px-1">↑</span> &gt; 「加入主畫面」。</li>
+                            </ul>
                         </div>
                     )}
                     
@@ -402,12 +433,18 @@
             
             // PWA Install Prompt
             const [deferredPrompt, setDeferredPrompt] = useState(null);
+            const [isLineBrowser, setIsLineBrowser] = useState(false);
 
             useEffect(() => {
                 window.addEventListener('beforeinstallprompt', (e) => {
                     e.preventDefault();
                     setDeferredPrompt(e);
                 });
+
+                // 偵測是否為 LINE 瀏覽器
+                if (navigator.userAgent.match(/Line/i)) {
+                    setIsLineBrowser(true);
+                }
             }, []);
 
             const [watchlistGroups, setWatchlistGroups] = useState(() => {
@@ -680,7 +717,7 @@
                         <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900">
                             {activeTab === 'search' && <ProductList data={filteredProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={setSelectedProduct} />}
                             {activeTab === 'watchlist' && <ProductList data={watchlistProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={setSelectedProduct} />}
-                            {activeTab === 'config' && <ConfigContent onSaveUrl={fetchFromUrl} onLoadJson={handleLoadJson} currentData={products} isDarkMode={isDarkMode} setDarkMode={setIsDarkMode} groups={watchlistGroups} setGroups={setWatchlistGroups} installEvent={deferredPrompt} />}
+                            {activeTab === 'config' && <ConfigContent onSaveUrl={fetchFromUrl} onLoadJson={handleLoadJson} currentData={products} isDarkMode={isDarkMode} setDarkMode={setIsDarkMode} groups={watchlistGroups} setGroups={setWatchlistGroups} installEvent={deferredPrompt} isLineBrowser={isLineBrowser} />}
                             {loading && (<div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-50 flex items-center justify-center flex-col"><RefreshCw className="w-10 h-10 text-blue-600 animate-spin mb-2" /><span className="text-gray-600 dark:text-gray-300 font-bold">資料同步中...</span></div>)}
                         </div>
 
