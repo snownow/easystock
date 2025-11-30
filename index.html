@@ -10,10 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
     
-    <!-- 網站圖示 (Favicon) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%233b82f6'/><path d='M100 180h312v220h-312z' fill='%23fbbf24'/><path d='M100 180l60-70h192l60 70' fill='%23f59e0b'/><path d='M100 180h312' stroke='%23b45309' stroke-width='20' stroke-linecap='round'/><circle cx='180' cy='290' r='20' fill='%2378350f'/><circle cx='332' cy='290' r='20' fill='%2378350f'/><path d='M220 330q36 30 72 0' stroke='%2378350f' stroke-width='16' fill='none' stroke-linecap='round'/></svg>">
-    
-    <!-- PWA Manifest (包含新的可愛紙箱圖示) -->
+    <!-- PWA Manifest -->
     <link rel="manifest" href='data:application/manifest+json;base64,eyJuYW1lIjoi5bqr5a2Y6Yq35ZSu57O757WxIiwic2hvcnRfbmFtZSI6IuW6q+WtmOezu+e1sSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjM2I4MmY2IiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDsKYmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkejV3Y204eU1EQXdmR1pwYkd4aGJtU2lJSFpwWlhRaklqQWdNQ0E1TVRJZ05URXlJajQ4TDI1aGJXVWdMM0JsY21ObGJuUmZibUZ0WlNJZ1ltRnpaVFkyTkNJK1BITmxZM1FnZDJsa2RHaDfJalV4TWlCb1pXbG5hSFE5SWpVeE1pQnlhV1E5SWpFd01DSWdaZ2xwYkd3OUlqTXlZamc0TW1ZMklqd3ZQRzF1YUhCbmJtTmxjM1JsY25Nc0lERXdNQ0ExTkRBeEl6TTNNamN6TUMwMU1USWdpR2xwYkd3OUlqTXlZMmRzWkMwek5pIStQSEJ1WVhSb2IzTnphV05zWlhKeklERXdNQ0ExTkRBeE1DMHpNbUV6TlMwek5pQjJalV4T2pFNE56QWdORGN3SWdaZ2xwYkd3OUlqTXlObVJ6WTJVeU5pIStQSEJ1WVhSb2IzTnphV05zWlhKeklERXdNQ0ExTkRBeEl6TTNNamN6TUMwMU1USWdZMjl1ZEdWNGRHVnlJanhqYjI1bWFXNXZiajBpTWpBaSUyMHkyOXVaM1Z5WkdWeWJpMDBJaUowY21GdVpDSStQSE5wY21Oc1pTQmplQzB4T0RBZ1kza3dJakl3SWdaYXdsYnNMdDAlMjNqY3RNekkxTUdZaUp2UGp4emJYSmphR3RsSUdONExETTBNaUJqZVQweU9UQWdjaTA4SW1acGJHdzhKek0zT0RNMU1HZ2lMMzQrUEdodWIzUnZkbVFnZFc1c0lEUXlOQ0F6TURBbk56SWdNQzR6SWdaemRISnZhMlVsSUQwZ0p6TTNOMk4zTURZbklpQnpkSEp2YTJVa1gyZGxaR1Z1ZEdWeWJpMDBJaUl3SWdaMmFXeHNJamh1YjI1bElHTjBjbTl0WlMxcWIzVnVaQ0k3Q2lBZ0lEMEdQQzl6ZG1jKyIsInNpemVzIjoiNTEyeDUxMiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=' />
 
     <!-- 載入核心函式庫 -->
@@ -42,9 +39,11 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         * { -webkit-tap-highlight-color: transparent; }
+        /* 禁止下拉刷新，避免影響 APP 體驗 */
         body { overscroll-behavior-y: none; }
     </style>
 </head>
+<!-- body 使用 h-[100dvh] 並設定全域背景色與文字色 -->
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden h-[100dvh] w-screen transition-colors duration-300">
     <div id="root" class="h-full w-full"></div>
 
@@ -52,8 +51,19 @@
     <script type="text/babel">
         const { useState, useMemo, useEffect } = React;
 
+        // --- 內建圖示組件 ---
         const Icon = ({ path, className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className={className}
+            >
                 <g dangerouslySetInnerHTML={{ __html: path }} />
             </svg>
         );
@@ -378,25 +388,18 @@
                 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); setDeferredPrompt(e); });
                 if (navigator.userAgent.match(/Line/i)) setIsLineBrowser(true);
                 
-                // Handle History API for back button
                 const handlePopState = (event) => {
-                    // If we have a selected product, close it
                     if (selectedProduct) {
                          setSelectedProduct(null);
-                    } 
-                    // If we are on a non-search tab, go back to search
-                    else if (activeTab !== 'search') {
+                    } else if (activeTab !== 'search') {
                         setActiveTab('search');
                     }
                 };
 
                 window.addEventListener('popstate', handlePopState);
-                
-                // Initial state
                 window.history.replaceState({ page: 'home' }, '');
-
                 return () => window.removeEventListener('popstate', handlePopState);
-            }, [selectedProduct, activeTab]); // Add dependencies to access current state
+            }, [selectedProduct, activeTab]); 
 
             const [watchlistGroups, setWatchlistGroups] = useState(() => { try { const saved = localStorage.getItem('inventory_groups'); return saved ? JSON.parse(saved) : DEFAULT_GROUPS; } catch (e) { return DEFAULT_GROUPS; } });
             useEffect(() => { localStorage.setItem('inventory_groups', JSON.stringify(watchlistGroups)); }, [watchlistGroups]);
@@ -483,16 +486,12 @@
             const watchlistProducts = useMemo(() => { return products.filter(p => { const groupId = watchlist[p.id]; return groupId === activeWatchlistGroup; }); }, [products, watchlist, activeWatchlistGroup]);
             const handleWatchlistUpdate = (productId, groupId) => { setWatchlist(prev => { const next = { ...prev }; if (groupId === null) delete next[productId]; else next[productId] = groupId; return next; }); setShowWatchlistModal(null); };
 
-            // Navigation Handlers with History API
             const handleOpenDetail = (p) => {
                 setSelectedProduct(p);
                 window.history.pushState({ page: 'detail' }, '');
             };
             
             const handleCloseDetail = () => {
-                // If we opened detail via pushState, we should go back
-                // But user might have reloaded page. 
-                // Safe bet: history.back() acts as closing.
                 window.history.back(); 
             };
 
@@ -512,66 +511,65 @@
                 if (p.salesTrend && p.priceTrend && p.totalYearSales > 0) { const totalRevenue = p.salesTrend.reduce((acc, qty, idx) => acc + (qty * (p.priceTrend[idx] || 0)), 0); avgPrice = Math.round(totalRevenue / p.totalYearSales); }
 
                 return (
-                    <div className={isDarkMode ? "dark" : ""}>
-                        <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 relative max-w-md mx-auto shadow-2xl">
-                            {showWatchlistModal === p.id && (
-                                <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
-                                    <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
-                                        <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
-                                        {watchlistGroups.map(group => (
-                                            <button key={group.id} onClick={() => handleWatchlistUpdate(p.id, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${watchedGroupId === group.id ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
-                                                <span className={`font-bold ${group.color}`}>{group.name}</span>
-                                                {watchedGroupId === group.id && <Check className="w-4 h-4 text-blue-500" />}
-                                            </button>
-                                        ))}
-                                        {isWatched && <button onClick={() => handleWatchlistUpdate(p.id, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
-                                        <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
-                                    </div>
+                    // 移除 wrapper 的 class 和 h-screen
+                    <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 relative max-w-md mx-auto shadow-2xl">
+                        {showWatchlistModal === p.id && (
+                            <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
+                                <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
+                                    <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
+                                    {watchlistGroups.map(group => (
+                                        <button key={group.id} onClick={() => handleWatchlistUpdate(p.id, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${watchedGroupId === group.id ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
+                                            <span className={`font-bold ${group.color}`}>{group.name}</span>
+                                            {watchedGroupId === group.id && <Check className="w-4 h-4 text-blue-500" />}
+                                        </button>
+                                    ))}
+                                    {isWatched && <button onClick={() => handleWatchlistUpdate(p.id, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
+                                    <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
                                 </div>
-                            )}
-                            <div className="bg-white dark:bg-gray-800 px-4 py-3 shadow-sm flex items-center gap-3 sticky top-0 z-10 border-b border-gray-100 dark:border-gray-700">
-                                <button onClick={handleCloseDetail} className="p-1 -ml-2"><ArrowLeft className="text-gray-600 dark:text-gray-300" /></button>
-                                <div className="flex-1 min-w-0"><h1 className="font-bold text-lg truncate text-gray-800 dark:text-white">{p.name}</h1><p className="text-xs text-gray-500 dark:text-gray-400">{p.id} • {p.brand}</p></div>
-                                <button onClick={() => setShowWatchlistModal(p.id)}><Star className={`w-6 h-6 ${isWatched ? (watchedGroup?.iconColor || 'fill-yellow-400 text-yellow-400') : 'text-gray-300 dark:text-gray-600'}`} /></button>
                             </div>
-                            <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20 min-h-0">
-                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <div><span className={`text-xs font-bold px-2 py-1 rounded-md ${p.status === '缺貨中' ? 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'}`}>{p.status}</span><div className="mt-2 text-3xl font-bold text-gray-800 dark:text-white">{p.totalStock}</div><div className="text-xs text-gray-400">總庫存量</div></div>
-                                        <div className="text-right space-y-1"><div className="text-xs text-gray-500 dark:text-gray-400">最後出貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastShipDate}</span></div><div className="text-xs text-gray-500 dark:text-gray-400">最後進貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastPurchaseDate}</span></div></div>
-                                    </div>
-                                    <div className="grid grid-cols-3 gap-2 py-3 border-t border-gray-100 dark:border-gray-700">
-                                        <div className="text-center"><div className="text-lg font-bold text-orange-500">{p.stats?.orderedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已訂未出</div></div>
-                                        <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-green-600 dark:text-green-400">{p.stats?.purchasedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已採未進</div></div>
-                                        <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-gray-600 dark:text-gray-300">{p.stats?.unshippedIn || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">未進貨量</div></div>
-                                    </div>
+                        )}
+                        <div className="bg-white dark:bg-gray-800 px-4 py-3 shadow-sm flex items-center gap-3 sticky top-0 z-10 border-b border-gray-100 dark:border-gray-700">
+                            <button onClick={handleCloseDetail} className="p-1 -ml-2"><ArrowLeft className="text-gray-600 dark:text-gray-300" /></button>
+                            <div className="flex-1 min-w-0"><h1 className="font-bold text-lg truncate text-gray-800 dark:text-white">{p.name}</h1><p className="text-xs text-gray-500 dark:text-gray-400">{p.id} • {p.brand}</p></div>
+                            <button onClick={() => setShowWatchlistModal(p.id)}><Star className={`w-6 h-6 ${isWatched ? (watchedGroup?.iconColor || 'fill-yellow-400 text-yellow-400') : 'text-gray-300 dark:text-gray-600'}`} /></button>
+                        </div>
+                        <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20 min-h-0">
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+                                <div className="flex justify-between items-start mb-4">
+                                    <div><span className={`text-xs font-bold px-2 py-1 rounded-md ${p.status === '缺貨中' ? 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'}`}>{p.status}</span><div className="mt-2 text-3xl font-bold text-gray-800 dark:text-white">{p.totalStock}</div><div className="text-xs text-gray-400">總庫存量</div></div>
+                                    <div className="text-right space-y-1"><div className="text-xs text-gray-500 dark:text-gray-400">最後出貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastShipDate}</span></div><div className="text-xs text-gray-500 dark:text-gray-400">最後進貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastPurchaseDate}</span></div></div>
                                 </div>
-                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
-                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><MapPin className="w-4 h-4" /> 倉庫分佈</h3>
-                                    <div className="max-h-48 overflow-y-auto"><table className="w-full text-sm"><thead className="text-gray-500 dark:text-gray-400 text-xs border-b dark:border-gray-700"><tr><th className="text-left py-2 px-2 font-normal">倉庫名稱</th><th className="text-right py-2 px-2 font-normal">數量</th></tr></thead><tbody className="divide-y divide-gray-50 dark:divide-gray-700">{p.warehouses && Object.keys(p.warehouses).length > 0 ? (Object.entries(p.warehouses).filter(([name]) => !['已訂未出', '已採未進', '未進貨量', '訂單數量', '庫存小計', '備註'].includes(name)).sort(([,a], [,b]) => b - a).map(([whName, qty]) => (<tr key={whName} className={qty > 0 ? "bg-blue-50/30 dark:bg-blue-900/20" : ""}><td className="py-2 px-2 text-gray-700 dark:text-gray-300">{whName}</td><td className={`py-2 px-2 text-right font-medium ${qty > 0 ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-600"}`}>{qty}</td></tr>))) : (<tr><td colSpan="2" className="py-4 text-center text-gray-400 text-xs">無倉庫庫存資料</td></tr>)}</tbody></table></div>
+                                <div className="grid grid-cols-3 gap-2 py-3 border-t border-gray-100 dark:border-gray-700">
+                                    <div className="text-center"><div className="text-lg font-bold text-orange-500">{p.stats?.orderedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已訂未出</div></div>
+                                    <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-green-600 dark:text-green-400">{p.stats?.purchasedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已採未進</div></div>
+                                    <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-gray-600 dark:text-gray-300">{p.stats?.unshippedIn || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">未進貨量</div></div>
                                 </div>
-                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
-                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><DollarSign className="w-4 h-4" /> 價格與成本結構</h3>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg border border-gray-100 dark:border-gray-600"><div className="text-[10px] text-gray-500 dark:text-gray-400 mb-1">建議售價</div><div className="font-bold text-gray-600 dark:text-gray-300 line-through decoration-gray-400 text-sm">${p.msrp?.toLocaleString() || '-'}</div></div>
-                                        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800"><div className="text-[10px] text-blue-600 dark:text-blue-400 mb-1">一般售價</div><div className="font-bold text-blue-700 dark:text-blue-300 text-lg">${p.price?.toLocaleString() || '-'}</div></div>
-                                        <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-100 dark:border-red-800"><div className="text-[10px] text-red-600 dark:text-red-400 mb-1">一般成本</div><div className="font-bold text-red-700 dark:text-red-300">${p.cost?.toLocaleString() || '-'}</div></div>
-                                        <div className={`p-3 rounded-lg border ${p.specialCost ? 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800' : 'bg-gray-50 border-gray-100 dark:bg-gray-700/30 dark:border-gray-600'}`}><div className={`text-[10px] mb-1 ${p.specialCost ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>特殊成本</div><div className={`font-bold ${p.specialCost ? 'text-orange-700 dark:text-orange-300' : 'text-gray-300 dark:text-gray-500'}`}>{p.specialCost ? `$${p.specialCost.toLocaleString()}` : 'N/A'}</div></div>
-                                    </div>
+                            </div>
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+                                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><MapPin className="w-4 h-4" /> 倉庫分佈</h3>
+                                <div className="max-h-48 overflow-y-auto"><table className="w-full text-sm"><thead className="text-gray-500 dark:text-gray-400 text-xs border-b dark:border-gray-700"><tr><th className="text-left py-2 px-2 font-normal">倉庫名稱</th><th className="text-right py-2 px-2 font-normal">數量</th></tr></thead><tbody className="divide-y divide-gray-50 dark:divide-gray-700">{p.warehouses && Object.keys(p.warehouses).length > 0 ? (Object.entries(p.warehouses).filter(([name]) => !['已訂未出', '已採未進', '未進貨量', '訂單數量', '庫存小計', '備註'].includes(name)).sort(([,a], [,b]) => b - a).map(([whName, qty]) => (<tr key={whName} className={qty > 0 ? "bg-blue-50/30 dark:bg-blue-900/20" : ""}><td className="py-2 px-2 text-gray-700 dark:text-gray-300">{whName}</td><td className={`py-2 px-2 text-right font-medium ${qty > 0 ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-600"}`}>{qty}</td></tr>))) : (<tr><td colSpan="2" className="py-4 text-center text-gray-400 text-xs">無倉庫庫存資料</td></tr>)}</tbody></table></div>
+                            </div>
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+                                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><DollarSign className="w-4 h-4" /> 價格與成本結構</h3>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg border border-gray-100 dark:border-gray-600"><div className="text-[10px] text-gray-500 dark:text-gray-400 mb-1">建議售價</div><div className="font-bold text-gray-600 dark:text-gray-300 line-through decoration-gray-400 text-sm">${p.msrp?.toLocaleString() || '-'}</div></div>
+                                    <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800"><div className="text-[10px] text-blue-600 dark:text-blue-400 mb-1">一般售價</div><div className="font-bold text-blue-700 dark:text-blue-300 text-lg">${p.price?.toLocaleString() || '-'}</div></div>
+                                    <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-100 dark:border-red-800"><div className="text-[10px] text-red-600 dark:text-red-400 mb-1">一般成本</div><div className="font-bold text-red-700 dark:text-red-300">${p.cost?.toLocaleString() || '-'}</div></div>
+                                    <div className={`p-3 rounded-lg border ${p.specialCost ? 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800' : 'bg-gray-50 border-gray-100 dark:bg-gray-700/30 dark:border-gray-600'}`}><div className={`text-[10px] mb-1 ${p.specialCost ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>特殊成本</div><div className={`font-bold ${p.specialCost ? 'text-orange-700 dark:text-orange-300' : 'text-gray-300 dark:text-gray-500'}`}>{p.specialCost ? `$${p.specialCost.toLocaleString()}` : 'N/A'}</div></div>
                                 </div>
-                                {p.note && (<div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4 shadow-sm border border-yellow-100 dark:border-yellow-800 flex gap-3"><AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 shrink-0 mt-0.5" /><div><h4 className="text-xs font-bold text-yellow-700 dark:text-yellow-400 mb-1">商品備註</h4><p className="text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">{p.note}</p></div></div>)}
-                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
-                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> 銷售分析</h3>
-                                    <div className="grid grid-cols-3 gap-2 mb-2 text-center divide-x divide-gray-100 dark:divide-gray-700">
-                                        <div className="text-left px-1"><span className="block text-xl font-bold text-red-600 dark:text-red-400">{p.totalYearSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">年總銷量</span></div>
-                                        <div className="px-1"><span className="block text-xl font-bold text-gray-700 dark:text-gray-300">{p.avgMonthSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均月銷</span></div>
-                                        <div className="text-right px-1"><span className="block text-xl font-bold text-orange-500 dark:text-orange-400">${avgPrice.toLocaleString()}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均成交價</span></div>
-                                    </div>
-                                    <DualAxisChart salesData={p.salesTrend} priceData={p.priceTrend} selectedMonth={selectedMonth} onMonthSelect={setSelectedMonth} />
-                                    <div className="mt-8 border-t border-gray-100 dark:border-gray-700 pt-4">
-                                        <div className="flex justify-between items-center mb-2"><h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 flex items-center gap-2"><PieChart className="w-4 h-4" /> {selectedMonth !== null ? `${selectedMonth + 1}月平台佔比` : "全年度平台佔比"}</h4>{selectedMonth !== null && (<button onClick={() => setSelectedMonth(null)} className="text-[10px] flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"><RotateCcw className="w-3 h-3" /> 重置總覽</button>)}</div>
-                                        <PieChartComponent data={currentPieData} emptyMessage={selectedMonth !== null ? "此月份無銷售數據" : "無銷售平台數據"} />
-                                    </div>
+                            </div>
+                            {p.note && (<div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4 shadow-sm border border-yellow-100 dark:border-yellow-800 flex gap-3"><AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 shrink-0 mt-0.5" /><div><h4 className="text-xs font-bold text-yellow-700 dark:text-yellow-400 mb-1">商品備註</h4><p className="text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">{p.note}</p></div></div>)}
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+                                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> 銷售分析</h3>
+                                <div className="grid grid-cols-3 gap-2 mb-2 text-center divide-x divide-gray-100 dark:divide-gray-700">
+                                    <div className="text-left px-1"><span className="block text-xl font-bold text-red-600 dark:text-red-400">{p.totalYearSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">年總銷量</span></div>
+                                    <div className="px-1"><span className="block text-xl font-bold text-gray-700 dark:text-gray-300">{p.avgMonthSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均月銷</span></div>
+                                    <div className="text-right px-1"><span className="block text-xl font-bold text-orange-500 dark:text-orange-400">${avgPrice.toLocaleString()}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均成交價</span></div>
+                                </div>
+                                <DualAxisChart salesData={p.salesTrend} priceData={p.priceTrend} selectedMonth={selectedMonth} onMonthSelect={setSelectedMonth} />
+                                <div className="mt-8 border-t border-gray-100 dark:border-gray-700 pt-4">
+                                    <div className="flex justify-between items-center mb-2"><h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 flex items-center gap-2"><PieChart className="w-4 h-4" /> {selectedMonth !== null ? `${selectedMonth + 1}月平台佔比` : "全年度平台佔比"}</h4>{selectedMonth !== null && (<button onClick={() => setSelectedMonth(null)} className="text-[10px] flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"><RotateCcw className="w-3 h-3" /> 重置總覽</button>)}</div>
+                                    <PieChartComponent data={currentPieData} emptyMessage={selectedMonth !== null ? "此月份無銷售數據" : "無銷售平台數據"} />
                                 </div>
                             </div>
                         </div>
@@ -580,84 +578,75 @@
             }
 
             return (
-                <div className={isDarkMode ? "dark" : ""}>
-                    <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 max-w-md mx-auto shadow-2xl overflow-hidden font-sans transition-colors duration-300 relative">
-                        {showWatchlistModal && (
-                            <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
-                                <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
-                                    <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
+                // 移除 wrapper 的 class 和 h-screen
+                <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 max-w-md mx-auto shadow-2xl overflow-hidden font-sans transition-colors duration-300 relative">
+                    {showWatchlistModal && (
+                        <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
+                            <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
+                                <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
+                                {watchlistGroups.map(group => {
+                                    const isSelected = watchlist[showWatchlistModal] === group.id;
+                                    return (
+                                        <button key={group.id} onClick={() => handleWatchlistUpdate(showWatchlistModal, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${isSelected ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
+                                            <div className="flex items-center gap-3"><div className={`w-3 h-3 rounded-full ${group.color.replace('text-', 'bg-')}`}></div><span className={`font-bold ${group.color}`}>{group.name}</span></div>{isSelected && <Check className="w-4 h-4 text-blue-500" />}
+                                        </button>
+                                    );
+                                })}
+                                {watchlist.hasOwnProperty(showWatchlistModal) && <button onClick={() => handleWatchlistUpdate(showWatchlistModal, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
+                                <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'search' && (
+                        <div className="bg-white dark:bg-gray-800 p-4 pb-2 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700 shrink-0">
+                            <div className="flex justify-between items-center mb-3"><h1 className="text-xl font-bold text-gray-800 dark:text-white">庫存查詢系統</h1><div className="text-[10px] text-gray-400 flex items-center gap-1">{isSyncing && <RefreshCw className="w-3 h-3 animate-spin text-blue-500" />}{isSyncing ? "更新中..." : (lastSync ? `更新: ${lastSync}` : "")}</div></div>
+                            {sheetLastUpdate && (<div className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-[10px] p-2 rounded-lg mb-3 flex items-center gap-1.5"><Clock className="w-3 h-3 shrink-0" /><span>{sheetLastUpdate}</span></div>)}
+                            <div className="relative mb-3"><Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" /><input type="text" placeholder="輸入編號、名稱或品牌..." className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-400" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /></div>
+                            <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+                                <div className="flex items-center gap-1 pr-2 border-r border-gray-200 dark:border-gray-700 shrink-0"><Eye className="w-3 h-3 text-gray-400" /><span className="text-[10px] text-gray-500 dark:text-gray-400">顯示:</span></div>
+                                {[{ key: 'stock', label: '庫存' }, { key: 'price', label: '售價' }, { key: 'cost', label: '成本' }].map(opt => (<button key={opt.key} onClick={() => setVisibleColumns(prev => ({ ...prev, [opt.key]: !prev[opt.key] }))} className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs border transition-colors ${visibleColumns[opt.key] ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300' : 'bg-transparent border-gray-200 text-gray-500 dark:border-gray-700 dark:text-gray-400'}`}>{visibleColumns[opt.key] && <Check className="w-3 h-3" />}{opt.label}</button>))}
+                            </div>
+                            {syncError && <div className="mt-1 text-[10px] text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> 同步異常 (請檢查設定)</div>}
+                        </div>
+                    )}
+
+                    {activeTab === 'watchlist' && (
+                        <div className="bg-white dark:bg-gray-800 p-0 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700 shrink-0">
+                            <div className="p-4 pb-2">
+                                <h1 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3"><Star className="w-6 h-6 fill-yellow-400 text-yellow-400" /> 重點追蹤清單</h1>
+                                <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                                     {watchlistGroups.map(group => {
-                                        const isSelected = watchlist[showWatchlistModal] === group.id;
+                                        const isActive = activeWatchlistGroup === group.id;
+                                        const count = Object.values(watchlist).filter(gid => gid === group.id).length;
                                         return (
-                                            <button key={group.id} onClick={() => handleWatchlistUpdate(showWatchlistModal, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${isSelected ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
-                                                <div className="flex items-center gap-3"><div className={`w-3 h-3 rounded-full ${group.color.replace('text-', 'bg-')}`}></div><span className={`font-bold ${group.color}`}>{group.name}</span></div>{isSelected && <Check className="w-4 h-4 text-blue-500" />}
+                                            <button key={group.id} onClick={() => setActiveWatchlistGroup(group.id)} className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${isActive ? `${group.bg} ${group.color} dark:bg-opacity-20 border border-transparent` : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400 border border-transparent'}`}>
+                                                {group.name}<span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/50' : 'bg-gray-200 dark:bg-gray-600'}`}>{count}</span>
                                             </button>
                                         );
                                     })}
-                                    {watchlist.hasOwnProperty(showWatchlistModal) && <button onClick={() => handleWatchlistUpdate(showWatchlistModal, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
-                                    <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
                                 </div>
                             </div>
-                        )}
-
-                        {activeTab === 'search' && (
-                            <div className="bg-white dark:bg-gray-800 p-4 pb-2 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700">
-                                <div className="flex justify-between items-center mb-3"><h1 className="text-xl font-bold text-gray-800 dark:text-white">庫存查詢系統</h1><div className="text-[10px] text-gray-400 flex items-center gap-1">{isSyncing && <RefreshCw className="w-3 h-3 animate-spin text-blue-500" />}{isSyncing ? "更新中..." : (lastSync ? `更新: ${lastSync}` : "")}</div></div>
-                                
-                                {/* 新增：顯示資料最後更新時間 */}
-                                {sheetLastUpdate && (
-                                    <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-[10px] p-2 rounded-lg mb-3 flex items-center gap-1.5">
-                                        <Clock className="w-3 h-3 shrink-0" />
-                                        <span>{sheetLastUpdate}</span>
-                                    </div>
-                                )}
-
-                                <div className="relative mb-3"><Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" /><input type="text" placeholder="輸入編號、名稱或品牌..." className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-400" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /></div>
-                                <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
-                                    <div className="flex items-center gap-1 pr-2 border-r border-gray-200 dark:border-gray-700 shrink-0"><Eye className="w-3 h-3 text-gray-400" /><span className="text-[10px] text-gray-500 dark:text-gray-400">顯示:</span></div>
-                                    {[{ key: 'stock', label: '庫存' }, { key: 'price', label: '售價' }, { key: 'cost', label: '成本' }].map(opt => (<button key={opt.key} onClick={() => setVisibleColumns(prev => ({ ...prev, [opt.key]: !prev[opt.key] }))} className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs border transition-colors ${visibleColumns[opt.key] ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300' : 'bg-transparent border-gray-200 text-gray-500 dark:border-gray-700 dark:text-gray-400'}`}>{visibleColumns[opt.key] && <Check className="w-3 h-3" />}{opt.label}</button>))}
-                                </div>
-                                {syncError && <div className="mt-1 text-[10px] text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> 同步異常 (請檢查設定)</div>}
-                            </div>
-                        )}
-
-                        {activeTab === 'watchlist' && (
-                            <div className="bg-white dark:bg-gray-800 p-0 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700">
-                                <div className="p-4 pb-2">
-                                    <h1 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3"><Star className="w-6 h-6 fill-yellow-400 text-yellow-400" /> 重點追蹤清單</h1>
-                                    <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-                                        {watchlistGroups.map(group => {
-                                            const isActive = activeWatchlistGroup === group.id;
-                                            const count = Object.values(watchlist).filter(gid => gid === group.id).length;
-                                            return (
-                                                <button key={group.id} onClick={() => setActiveWatchlistGroup(group.id)} className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${isActive ? `${group.bg} ${group.color} dark:bg-opacity-20 border border-transparent` : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400 border border-transparent'}`}>
-                                                    {group.name}<span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/50' : 'bg-gray-200 dark:bg-gray-600'}`}>{count}</span>
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'config' && (
-                            <div className="bg-white dark:bg-gray-800 p-4 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700">
-                                <h1 className="text-xl font-bold text-gray-800 dark:text-white">系統設定</h1>
-                            </div>
-                        )}
-
-                        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 min-h-0">
-                            {activeTab === 'search' && <ProductList data={filteredProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={handleOpenDetail} />}
-                            {activeTab === 'watchlist' && <ProductList data={watchlistProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={handleOpenDetail} />}
-                            {activeTab === 'config' && <ConfigContent onSaveUrl={fetchFromUrl} onLoadJson={handleLoadJson} currentData={products} isDarkMode={isDarkMode} setDarkMode={setIsDarkMode} groups={watchlistGroups} setGroups={setWatchlistGroups} installEvent={deferredPrompt} isLineBrowser={isLineBrowser} />}
-                            {loading && (<div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-50 flex items-center justify-center flex-col"><RefreshCw className="w-10 h-10 text-blue-600 animate-spin mb-2" /><span className="text-gray-600 dark:text-gray-300 font-bold">資料同步中...</span></div>)}
                         </div>
+                    )}
 
-                        <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center p-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] shrink-0">
-                            <button onClick={() => handleTabChange('search')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'search' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Search className="w-6 h-6" /><span className="text-[10px] font-medium">查詢</span></button>
-                            <button onClick={() => handleTabChange('watchlist')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'watchlist' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Star className={`w-6 h-6 ${activeTab === 'watchlist' && Object.keys(watchlist).length > 0 ? 'fill-current' : ''}`} /><span className="text-[10px] font-medium">追蹤</span></button>
-                            <button onClick={() => handleTabChange('config')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'config' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Settings className="w-6 h-6" /><span className="text-[10px] font-medium">設定</span></button>
+                    {activeTab === 'config' && (
+                        <div className="bg-white dark:bg-gray-800 p-4 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700 shrink-0">
+                            <h1 className="text-xl font-bold text-gray-800 dark:text-white">系統設定</h1>
                         </div>
+                    )}
+
+                    <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 min-h-0">
+                        {activeTab === 'search' && <ProductList data={filteredProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={handleOpenDetail} />}
+                        {activeTab === 'watchlist' && <ProductList data={watchlistProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={handleOpenDetail} />}
+                        {activeTab === 'config' && <ConfigContent onSaveUrl={fetchFromUrl} onLoadJson={handleLoadJson} currentData={products} isDarkMode={isDarkMode} setDarkMode={setIsDarkMode} groups={watchlistGroups} setGroups={setWatchlistGroups} installEvent={deferredPrompt} isLineBrowser={isLineBrowser} />}
+                        {loading && (<div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-50 flex items-center justify-center flex-col"><RefreshCw className="w-10 h-10 text-blue-600 animate-spin mb-2" /><span className="text-gray-600 dark:text-gray-300 font-bold">資料同步中...</span></div>)}
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center p-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] shrink-0">
+                        <button onClick={() => handleTabChange('search')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'search' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Search className="w-6 h-6" /><span className="text-[10px] font-medium">查詢</span></button>
+                        <button onClick={() => handleTabChange('watchlist')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'watchlist' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Star className={`w-6 h-6 ${activeTab === 'watchlist' && Object.keys(watchlist).length > 0 ? 'fill-current' : ''}`} /><span className="text-[10px] font-medium">追蹤</span></button>
+                        <button onClick={() => handleTabChange('config')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'config' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Settings className="w-6 h-6" /><span className="text-[10px] font-medium">設定</span></button>
                     </div>
                 </div>
             );
