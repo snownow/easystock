@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>庫存銷售系統</title>
     
+    <!-- PWA 設定 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
     
-    <!-- 修正 Manifest 格式 -->
-    <link rel="manifest" href='data:application/manifest+json;base64,eyJuYW1lIjoi5bqr5a2Y6Yq35ZSu57O757WxIiwic2hvcnRfbmFtZSI6IuW6q+WtmOezu+e1sSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjM2I4MmY2IiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMmJ6eGtaVzVrYjNOaGRDQnVaVzR4TzF4eWRXeHNiM0lnZGlsemQyVnlUbTh3SURBd0lEVXhNaUJ1TVRJOUlqTXlOUzR5T0M5M015SWdmR1pwYkd4aGJtU2lJSFpwWlhRaklqQWdNQ0E1TVRJZ05URXlJajQ4TDIxaGRHZ2dZWEJ3YkdGMFlXMWxMVzF2WW1sc1pTMXpibTlsTFd4aGJHVjBMUzF2ZG1WeUxTMXZjbWN2WkdWMFlXbHNhVzVsT1d4dmJHVnlMbWQ0Ym1WMExtNXZiR3g4TDIxaGRHZ2dZWEJ3YkdGMFlXMWxMVzF2WW1sc1pTMXpibTlsTFd4aGJHVjBMUzF2ZG1WeUxTMXZjbWN2WkdWMFlXbHNhVzVsT1d4dmJHVnlMbWQ0Ym1WMExtNXZiR3g4Y3pjOQoiICAvPgo8cGF0aCBkPSJNNjQgMTMyTDI1NiAzNmwxOTIgOTZ2Mjg4YTQ4IDQ4IDAgMCAxLTQ4IDQ4SDExMmE0OCA0OCAwIDAgMS00OC00OFYxMzJ6IiBmaWxsPSIjRjU5RTBCIi8+CjxwYXRoIGQ9Ik02NCAxMzJsMTkyIDk2IDE5Mi05NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQjQ1MzA5IiBzdHJva2Utd2lkdGg9IjI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTI1NiAyMjh2MjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNCNDUzMDkiIHN0cm9rZS13aWR0aD0iMjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIzMjAiIHI9IjI0IiBmaWxsPSIjNzgzNTBGIi8+CjxjaXJjbGUgY3g9IjMzMiIgY3k9IjMyMCIgcj0iMjQiIGZpbGw9IiM3ODM1MEYiLz4KPHBhdGggZD0iTTIwMCAzODBjMjAgMjAgOTIgMjAgMTEyIDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzc4MzUwRiIgc3Ryb2tlLXdpZHRoPSIyMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPg==Iiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJwdXJwb3NlIjoiYW55IG1hc2thYmxlIn1dfQ==' />
+    <!-- 連結外部 Manifest 檔案 (關鍵修改：這是 Android 能夠安裝為 APP 的核心) -->
+    <link rel="manifest" href="./manifest.json" />
+    
+    <!-- 網站圖示 (瀏覽器分頁用) -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPScyMCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPScyMCcgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0nMjAnIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0nMTYnIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
 
-    <!-- 核心庫 -->
+    <!-- 載入核心函式庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React 18 -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <!-- Tailwind 設定 -->
@@ -42,21 +48,34 @@
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden h-[100dvh] w-screen transition-colors duration-300">
     <div id="root" class="h-full w-full"></div>
 
+    <!-- Service Worker 註冊 -->
     <script>
-        // 註冊 Service Worker (這行很重要，沒有它 Chrome 就不會跳安裝提示)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW 註冊失敗 (若無 sw.js 檔案可忽略)', err));
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW 註冊成功:', reg))
+                    .catch(err => console.log('SW 註冊失敗:', err));
             });
         }
     </script>
 
-    <!-- React 應用程式 -->
+    <!-- React 應用程式邏輯 -->
     <script type="text/babel">
         const { useState, useMemo, useEffect } = React;
 
+        // --- 內建圖示組件 ---
         const Icon = ({ path, className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className={className}
+            >
                 <g dangerouslySetInnerHTML={{ __html: path }} />
             </svg>
         );
@@ -104,6 +123,7 @@
             Moon, Sun, Eye, Check, X, RotateCcw, Tags, Bug, Edit3, Smartphone, ExternalLink, Clock
         } = Icons;
 
+        // --- 設定與資料 ---
         const DEFAULT_API_URL = ""; 
 
         const DEFAULT_GROUPS = [
@@ -133,6 +153,7 @@
             }
         ];
 
+        // --- 組件 ---
         const DualAxisChart = ({ salesData, priceData, selectedMonth, onMonthSelect }) => {
             const safeSalesData = salesData || new Array(12).fill(0);
             const safePriceData = priceData || new Array(12).fill(0);
@@ -290,44 +311,6 @@
             return (
                 <div className="p-4 space-y-6 animate-in slide-in-from-right pb-24">
                     
-                    {/* 顯示安裝按鈕 (強制顯示，但依據狀態切換內容) */}
-                    <div className="bg-blue-600 p-4 rounded-xl shadow-lg flex items-center justify-between text-white">
-                        <div className="flex items-center gap-3">
-                            <div className="bg-white/20 p-2 rounded-lg"><Smartphone className="w-6 h-6" /></div>
-                            <div>
-                                <h3 className="font-bold text-sm">{installEvent ? "安裝應用程式" : "加入主畫面"}</h3>
-                                <p className="text-[10px] opacity-80">獲得更佳的全螢幕體驗</p>
-                            </div>
-                        </div>
-                        {/* 如果有捕捉到安裝事件，則顯示原生安裝，否則顯示手動教學 */}
-                        {installEvent ? (
-                             <button 
-                                onClick={handleInstall}
-                                className="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-100 active:scale-95 transition"
-                            >
-                                安裝
-                            </button>
-                        ) : (
-                            <button 
-                                onClick={() => alert('請點擊瀏覽器選單 (⋮) -> 「加到主畫面」或「安裝應用程式」')}
-                                className="bg-white/20 text-white border border-white/50 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-white/30 transition"
-                            >
-                                教學
-                            </button>
-                        )}
-                    </div>
-
-                    {/* 手動安裝教學 (永遠顯示，以免使用者不知道怎麼裝) */}
-                    <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-                        <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-2">
-                            <Smartphone className="w-4 h-4 text-gray-500" /> 安裝說明
-                        </h3>
-                        <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside">
-                            <li><strong>Android (Chrome):</strong> 若按鈕無效，請點選瀏覽器右上角選單 <strong>⋮</strong> &gt; <strong>「安裝應用程式」</strong>或<strong>「加到主畫面」</strong>。</li>
-                            <li><strong>iPhone (Safari):</strong> 點擊下方分享按鈕 <span className="inline-block border border-gray-400 rounded px-1">↑</span> &gt; <strong>「加入主畫面」</strong>。</li>
-                        </ul>
-                    </div>
-
                     {/* LINE 警告 */}
                     {isLineBrowser && (
                         <div className="bg-orange-50 border border-orange-200 p-4 rounded-xl shadow-sm flex flex-col gap-2">
@@ -337,6 +320,26 @@
                         </div>
                     )}
 
+                    {/* 安裝提示 (僅在 Chrome 支援且未安裝時顯示) */}
+                    {installEvent && (
+                        <div className="bg-blue-600 p-4 rounded-xl shadow-lg flex items-center justify-between text-white">
+                            <div className="flex items-center gap-3"><div className="bg-white/20 p-2 rounded-lg"><Smartphone className="w-6 h-6" /></div><div><h3 className="font-bold text-sm">安裝應用程式</h3><p className="text-[10px] opacity-80">獲得更佳的全螢幕體驗</p></div></div>
+                            <button 
+                                onClick={handleInstall}
+                                className="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-100 active:scale-95 transition"
+                            >
+                                安裝
+                            </button>
+                        </div>
+                    )}
+                    
+                    {/* 手動安裝教學 (當沒有自動安裝按鈕時顯示) */}
+                    {!installEvent && !isLineBrowser && (
+                        <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                            <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-2"><Smartphone className="w-4 h-4 text-gray-500" /> 如何安裝到手機？</h3>
+                            <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1 list-disc list-inside"><li><strong>Android (Chrome):</strong> 點擊瀏覽器右上角選單 ⋮ &gt; 「加到主畫面」或「安裝應用程式」。</li><li><strong>iPhone (Safari):</strong> 點擊下方分享按鈕 <span className="inline-block border border-gray-400 rounded px-1">↑</span> &gt; 「加入主畫面」。</li></ul>
+                        </div>
+                    )}
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                         <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3"><Moon className="w-4 h-4 text-purple-400" /> 外觀顯示</h3>
                         <div className="flex items-center justify-between"><span className="text-sm text-gray-600 dark:text-gray-300">深色模式 (Dark Mode)</span><button onClick={() => setDarkMode(!isDarkMode)} className={`w-12 h-6 rounded-full p-1 transition-colors duration-300 ${isDarkMode ? 'bg-purple-500' : 'bg-gray-300'}`}><div className={`w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isDarkMode ? 'translate-x-6' : ''}`}></div></button></div>
@@ -523,8 +526,7 @@
 
                 return (
                     <div className={isDarkMode ? "dark" : ""}>
-                        {/* 修正重點：使用 fixed inset-0 強制全螢幕，解決手機導覽列跑版問題 */}
-                        <div className="fixed inset-0 flex flex-col bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 max-w-md mx-auto shadow-2xl">
+                        <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 relative max-w-md mx-auto shadow-2xl">
                             {showWatchlistModal === p.id && (
                                 <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
                                     <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
@@ -591,76 +593,76 @@
             }
 
             return (
-                // 修正：使用 fixed inset-0 強制全螢幕，解決手機導覽列跑版問題
-                <div className="fixed inset-0 flex flex-col bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 max-w-md mx-auto shadow-2xl">
-                    {showWatchlistModal && (
-                        <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
-                            <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
-                                <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
-                                {watchlistGroups.map(group => {
-                                    const isSelected = watchlist[showWatchlistModal] === group.id;
-                                    return (
-                                        <button key={group.id} onClick={() => handleWatchlistUpdate(showWatchlistModal, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${isSelected ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
-                                            <div className="flex items-center gap-3"><div className={`w-3 h-3 rounded-full ${group.color.replace('text-', 'bg-')}`}></div><span className={`font-bold ${group.color}`}>{group.name}</span></div>{isSelected && <Check className="w-4 h-4 text-blue-500" />}
-                                        </button>
-                                    );
-                                })}
-                                {watchlist.hasOwnProperty(showWatchlistModal) && <button onClick={() => handleWatchlistUpdate(showWatchlistModal, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
-                                <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
-                            </div>
-                        </div>
-                    )}
-
-                    {activeTab === 'search' && (
-                        <div className="bg-white dark:bg-gray-800 p-4 pb-2 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700 shrink-0">
-                            <div className="flex justify-between items-center mb-3"><h1 className="text-xl font-bold text-gray-800 dark:text-white">庫存查詢系統</h1><div className="text-[10px] text-gray-400 flex items-center gap-1">{isSyncing && <RefreshCw className="w-3 h-3 animate-spin text-blue-500" />}{isSyncing ? "更新中..." : (lastSync ? `更新: ${lastSync}` : "")}</div></div>
-                            {sheetLastUpdate && (<div className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-[10px] p-2 rounded-lg mb-3 flex items-center gap-1.5"><Clock className="w-3 h-3 shrink-0" /><span>{sheetLastUpdate}</span></div>)}
-                            <div className="relative mb-3"><Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" /><input type="text" placeholder="輸入編號、名稱或品牌..." className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-400" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /></div>
-                            <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
-                                <div className="flex items-center gap-1 pr-2 border-r border-gray-200 dark:border-gray-700 shrink-0"><Eye className="w-3 h-3 text-gray-400" /><span className="text-[10px] text-gray-500 dark:text-gray-400">顯示:</span></div>
-                                {[{ key: 'stock', label: '庫存' }, { key: 'price', label: '售價' }, { key: 'cost', label: '成本' }].map(opt => (<button key={opt.key} onClick={() => setVisibleColumns(prev => ({ ...prev, [opt.key]: !prev[opt.key] }))} className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs border transition-colors ${visibleColumns[opt.key] ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300' : 'bg-transparent border-gray-200 text-gray-500 dark:border-gray-700 dark:text-gray-400'}`}>{visibleColumns[opt.key] && <Check className="w-3 h-3" />}{opt.label}</button>))}
-                            </div>
-                            {syncError && <div className="mt-1 text-[10px] text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> 同步異常 (請檢查設定)</div>}
-                        </div>
-                    )}
-
-                    {activeTab === 'watchlist' && (
-                        <div className="bg-white dark:bg-gray-800 p-0 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700 shrink-0">
-                            <div className="p-4 pb-2">
-                                <h1 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3"><Star className="w-6 h-6 fill-yellow-400 text-yellow-400" /> 重點追蹤清單</h1>
-                                <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                <div className={isDarkMode ? "dark" : ""}>
+                    <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 max-w-md mx-auto shadow-2xl overflow-hidden font-sans transition-colors duration-300 relative">
+                        {showWatchlistModal && (
+                            <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
+                                <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
+                                    <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
                                     {watchlistGroups.map(group => {
-                                        const isActive = activeWatchlistGroup === group.id;
-                                        const count = Object.values(watchlist).filter(gid => gid === group.id).length;
+                                        const isSelected = watchlist[showWatchlistModal] === group.id;
                                         return (
-                                            <button key={group.id} onClick={() => setActiveWatchlistGroup(group.id)} className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${isActive ? `${group.bg} ${group.color} dark:bg-opacity-20 border border-transparent` : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400 border border-transparent'}`}>
-                                                {group.name}<span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/50' : 'bg-gray-200 dark:bg-gray-600'}`}>{count}</span>
+                                            <button key={group.id} onClick={() => handleWatchlistUpdate(showWatchlistModal, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${isSelected ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
+                                                <div className="flex items-center gap-3"><div className={`w-3 h-3 rounded-full ${group.color.replace('text-', 'bg-')}`}></div><span className={`font-bold ${group.color}`}>{group.name}</span></div>{isSelected && <Check className="w-4 h-4 text-blue-500" />}
                                             </button>
                                         );
                                     })}
+                                    {watchlist.hasOwnProperty(showWatchlistModal) && <button onClick={() => handleWatchlistUpdate(showWatchlistModal, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
+                                    <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
                                 </div>
                             </div>
+                        )}
+
+                        {activeTab === 'search' && (
+                            <div className="bg-white dark:bg-gray-800 p-4 pb-2 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700 shrink-0">
+                                <div className="flex justify-between items-center mb-3"><h1 className="text-xl font-bold text-gray-800 dark:text-white">庫存查詢系統</h1><div className="text-[10px] text-gray-400 flex items-center gap-1">{isSyncing && <RefreshCw className="w-3 h-3 animate-spin text-blue-500" />}{isSyncing ? "更新中..." : (lastSync ? `更新: ${lastSync}` : "")}</div></div>
+                                {sheetLastUpdate && (<div className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-[10px] p-2 rounded-lg mb-3 flex items-center gap-1.5"><Clock className="w-3 h-3 shrink-0" /><span>{sheetLastUpdate}</span></div>)}
+                                <div className="relative mb-3"><Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" /><input type="text" placeholder="輸入編號、名稱或品牌..." className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-400" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /></div>
+                                <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+                                    <div className="flex items-center gap-1 pr-2 border-r border-gray-200 dark:border-gray-700 shrink-0"><Eye className="w-3 h-3 text-gray-400" /><span className="text-[10px] text-gray-500 dark:text-gray-400">顯示:</span></div>
+                                    {[{ key: 'stock', label: '庫存' }, { key: 'price', label: '售價' }, { key: 'cost', label: '成本' }].map(opt => (<button key={opt.key} onClick={() => setVisibleColumns(prev => ({ ...prev, [opt.key]: !prev[opt.key] }))} className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs border transition-colors ${visibleColumns[opt.key] ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300' : 'bg-transparent border-gray-200 text-gray-500 dark:border-gray-700 dark:text-gray-400'}`}>{visibleColumns[opt.key] && <Check className="w-3 h-3" />}{opt.label}</button>))}
+                                </div>
+                                {syncError && <div className="mt-1 text-[10px] text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> 同步異常 (請檢查設定)</div>}
+                            </div>
+                        )}
+
+                        {activeTab === 'watchlist' && (
+                            <div className="bg-white dark:bg-gray-800 p-0 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700 shrink-0">
+                                <div className="p-4 pb-2">
+                                    <h1 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-3"><Star className="w-6 h-6 fill-yellow-400 text-yellow-400" /> 重點追蹤清單</h1>
+                                    <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                                        {watchlistGroups.map(group => {
+                                            const isActive = activeWatchlistGroup === group.id;
+                                            const count = Object.values(watchlist).filter(gid => gid === group.id).length;
+                                            return (
+                                                <button key={group.id} onClick={() => setActiveWatchlistGroup(group.id)} className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${isActive ? `${group.bg} ${group.color} dark:bg-opacity-20 border border-transparent` : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400 border border-transparent'}`}>
+                                                    {group.name}<span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/50' : 'bg-gray-200 dark:bg-gray-600'}`}>{count}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'config' && (
+                            <div className="bg-white dark:bg-gray-800 p-4 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700 shrink-0">
+                                <h1 className="text-xl font-bold text-gray-800 dark:text-white">系統設定</h1>
+                            </div>
+                        )}
+
+                        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 min-h-0">
+                            {activeTab === 'search' && <ProductList data={filteredProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={handleOpenDetail} />}
+                            {activeTab === 'watchlist' && <ProductList data={watchlistProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={handleOpenDetail} />}
+                            {activeTab === 'config' && <ConfigContent onSaveUrl={fetchFromUrl} onLoadJson={handleLoadJson} currentData={products} isDarkMode={isDarkMode} setDarkMode={setIsDarkMode} groups={watchlistGroups} setGroups={setWatchlistGroups} installEvent={deferredPrompt} isLineBrowser={isLineBrowser} />}
+                            {loading && (<div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-50 flex items-center justify-center flex-col"><RefreshCw className="w-10 h-10 text-blue-600 animate-spin mb-2" /><span className="text-gray-600 dark:text-gray-300 font-bold">資料同步中...</span></div>)}
                         </div>
-                    )}
 
-                    {activeTab === 'config' && (
-                        <div className="bg-white dark:bg-gray-800 p-4 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700 shrink-0">
-                            <h1 className="text-xl font-bold text-gray-800 dark:text-white">系統設定</h1>
+                        <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center p-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] shrink-0">
+                            <button onClick={() => handleTabChange('search')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'search' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Search className="w-6 h-6" /><span className="text-[10px] font-medium">查詢</span></button>
+                            <button onClick={() => handleTabChange('watchlist')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'watchlist' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Star className={`w-6 h-6 ${activeTab === 'watchlist' && Object.keys(watchlist).length > 0 ? 'fill-current' : ''}`} /><span className="text-[10px] font-medium">追蹤</span></button>
+                            <button onClick={() => handleTabChange('config')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'config' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Settings className="w-6 h-6" /><span className="text-[10px] font-medium">設定</span></button>
                         </div>
-                    )}
-
-                    <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 min-h-0">
-                        {activeTab === 'search' && <ProductList data={filteredProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={handleOpenDetail} />}
-                        {activeTab === 'watchlist' && <ProductList data={watchlistProducts} visibleColumns={visibleColumns} onOpenWatchlistModal={setShowWatchlistModal} watchlistState={watchlist} watchlistGroups={watchlistGroups} onSelectProduct={handleOpenDetail} />}
-                        {activeTab === 'config' && <ConfigContent onSaveUrl={fetchFromUrl} onLoadJson={handleLoadJson} currentData={products} isDarkMode={isDarkMode} setDarkMode={setIsDarkMode} groups={watchlistGroups} setGroups={setWatchlistGroups} installEvent={deferredPrompt} isLineBrowser={isLineBrowser} />}
-                        {loading && (<div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-50 flex items-center justify-center flex-col"><RefreshCw className="w-10 h-10 text-blue-600 animate-spin mb-2" /><span className="text-gray-600 dark:text-gray-300 font-bold">資料同步中...</span></div>)}
-                    </div>
-
-                    {/* 修正 4: pb 增加底部安全距離 */}
-                    <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center p-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] shrink-0">
-                        <button onClick={() => handleTabChange('search')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'search' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Search className="w-6 h-6" /><span className="text-[10px] font-medium">查詢</span></button>
-                        <button onClick={() => handleTabChange('watchlist')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'watchlist' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Star className={`w-6 h-6 ${activeTab === 'watchlist' && Object.keys(watchlist).length > 0 ? 'fill-current' : ''}`} /><span className="text-[10px] font-medium">追蹤</span></button>
-                        <button onClick={() => handleTabChange('config')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'config' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Settings className="w-6 h-6" /><span className="text-[10px] font-medium">設定</span></button>
                     </div>
                 </div>
             );
