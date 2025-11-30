@@ -39,31 +39,18 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         * { -webkit-tap-highlight-color: transparent; }
-        /* 強制讓 html, body 佔滿螢幕，並不顯示捲軸 */
-        html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
-        #root { height: 100%; width: 100%; }
+        body { overscroll-behavior-y: none; }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-    <div id="root"></div>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden h-[100dvh] w-screen transition-colors duration-300">
+    <div id="root" class="h-full w-full"></div>
 
     <!-- React 應用程式邏輯 -->
     <script type="text/babel">
         const { useState, useMemo, useEffect } = React;
 
-        // --- 內建圖示組件 ---
         const Icon = ({ path, className }) => (
-            <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="24" height="24" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                className={className}
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
                 <g dangerouslySetInnerHTML={{ __html: path }} />
             </svg>
         );
@@ -95,7 +82,8 @@
             Bug: '<rect width="8" height="14" x="8" y="6" rx="4"/><path d="m19 7-3 2"/><path d="m5 7 3 2"/><path d="m19 19-3-2"/><path d="m5 19 3-2"/><path d="M20 13h-4"/><path d="M4 13h4"/><path d="m10 4 1 2"/><path d="m14 4-1 2"/>',
             Edit3: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
             Smartphone: '<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>',
-            ExternalLink: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/>'
+            ExternalLink: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/>',
+            Clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'
         };
 
         const Icons = Object.keys(ICONS_PATH).reduce((acc, key) => {
@@ -107,7 +95,7 @@
             Search, Package, TrendingUp, MapPin, Star, ArrowLeft, 
             BarChart3, PieChart, LayoutGrid, FileText, DollarSign, 
             AlertCircle, Settings, RefreshCw, Download, Link: LinkIcon, 
-            Moon, Sun, Eye, Check, X, RotateCcw, Tags, Bug, Edit3, Smartphone, ExternalLink
+            Moon, Sun, Eye, Check, X, RotateCcw, Tags, Bug, Edit3, Smartphone, ExternalLink, Clock
         } = Icons;
 
         const DEFAULT_API_URL = ""; 
@@ -270,6 +258,7 @@
             );
         };
 
+        // --- 頁面組件 ---
         const ConfigContent = ({ onSaveUrl, onLoadJson, currentData, isDarkMode, setDarkMode, groups, setGroups, installEvent, isLineBrowser }) => {
             const [url, setUrl] = useState(localStorage.getItem('inventory_api_url') || DEFAULT_API_URL);
             const [jsonInput, setJsonInput] = useState('');
@@ -294,6 +283,8 @@
 
             return (
                 <div className="p-4 space-y-6 animate-in slide-in-from-right pb-24">
+                    
+                    {/* LINE 警告 */}
                     {isLineBrowser && (
                         <div className="bg-orange-50 border border-orange-200 p-4 rounded-xl shadow-sm flex flex-col gap-2">
                             <div className="flex items-center gap-2 text-orange-700 font-bold"><AlertCircle className="w-5 h-5" /><span>檢測到 LINE 瀏覽器</span></div>
@@ -301,12 +292,21 @@
                             <div className="text-xs text-orange-600 bg-orange-100 p-2 rounded mt-1">請點擊右上角 <span className="font-bold">⋮</span> 或 <span className="font-bold">↗</span>，選擇<br/><span className="font-bold flex items-center gap-1 mt-1"><ExternalLink className="w-3 h-3"/> 以預設瀏覽器開啟</span></div>
                         </div>
                     )}
+
+                    {/* 安裝提示 (僅在 Chrome 支援且未安裝時顯示) */}
                     {installEvent && (
                         <div className="bg-blue-600 p-4 rounded-xl shadow-lg flex items-center justify-between text-white">
                             <div className="flex items-center gap-3"><div className="bg-white/20 p-2 rounded-lg"><Smartphone className="w-6 h-6" /></div><div><h3 className="font-bold text-sm">安裝應用程式</h3><p className="text-[10px] opacity-80">獲得更佳的全螢幕體驗</p></div></div>
-                            <button onClick={handleInstall} className="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-100 active:scale-95 transition">安裝</button>
+                            <button 
+                                onClick={handleInstall}
+                                className="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm hover:bg-gray-100 active:scale-95 transition"
+                            >
+                                安裝
+                            </button>
                         </div>
                     )}
+                    
+                    {/* 手動安裝教學 (當沒有自動安裝按鈕時顯示) */}
                     {!installEvent && !isLineBrowser && (
                         <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                             <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-2"><Smartphone className="w-4 h-4 text-gray-500" /> 如何安裝到手機？</h3>
@@ -369,6 +369,7 @@
             const [selectedProduct, setSelectedProduct] = useState(null);
             const [deferredPrompt, setDeferredPrompt] = useState(null);
             const [isLineBrowser, setIsLineBrowser] = useState(false);
+            const [sheetLastUpdate, setSheetLastUpdate] = useState('');
 
             useEffect(() => {
                 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); setDeferredPrompt(e); });
@@ -417,12 +418,46 @@
                     const text = await res.text();
                     let data; try { data = JSON.parse(text); } catch (e) { throw new Error("無法解析資料"); }
                     if (data && data.error) throw new Error(`Script Error: ${data.error}`);
-                    if (Array.isArray(data)) { setProducts(data); const timeString = new Date().toLocaleTimeString(); setLastSync(timeString); localStorage.setItem('inventory_data_cache', JSON.stringify(data)); localStorage.setItem('inventory_last_sync_time', timeString); } else { throw new Error("資料格式錯誤 (非 Array)"); }
-                } catch (error) { setSyncError(error.message); if (!isBackground && products === MOCK_DATA) { } } 
-                finally { setLoading(false); setIsSyncing(false); }
+                    
+                    // 修正：支援新的 API 回傳格式 (Object with items & meta) 或舊格式 (Array)
+                    let items = [];
+                    if (Array.isArray(data)) {
+                        items = data; // 舊版相容
+                    } else if (data.items && Array.isArray(data.items)) {
+                        items = data.items; // 新版格式
+                        if (data.meta && data.meta.lastUpdate) {
+                            setSheetLastUpdate(data.meta.lastUpdate);
+                            localStorage.setItem('inventory_sheet_last_update', data.meta.lastUpdate);
+                        }
+                    } else {
+                         throw new Error("資料格式錯誤 (無效的 JSON 結構)"); 
+                    }
+                    
+                    setProducts(items);
+                    const timeString = new Date().toLocaleTimeString();
+                    setLastSync(timeString);
+                    localStorage.setItem('inventory_data_cache', JSON.stringify(items));
+                    localStorage.setItem('inventory_last_sync_time', timeString);
+                    
+                } catch (error) { 
+                    setSyncError(error.message); 
+                    if (!isBackground && products === MOCK_DATA) { } 
+                } finally { 
+                    setLoading(false); setIsSyncing(false); 
+                }
             };
 
-            useEffect(() => { const hasLocalData = products !== MOCK_DATA && products.length > 0; const targetUrl = localStorage.getItem('inventory_api_url') || DEFAULT_API_URL; if (targetUrl) fetchFromUrl(targetUrl, hasLocalData); }, []); 
+            useEffect(() => { 
+                const hasLocalData = products !== MOCK_DATA && products.length > 0; 
+                const targetUrl = localStorage.getItem('inventory_api_url') || DEFAULT_API_URL; 
+                
+                // 嘗試讀取上次存的試算表更新時間
+                const savedSheetUpdate = localStorage.getItem('inventory_sheet_last_update');
+                if (savedSheetUpdate) setSheetLastUpdate(savedSheetUpdate);
+
+                if (targetUrl) fetchFromUrl(targetUrl, hasLocalData); 
+            }, []); 
+
             const handleLoadJson = (data) => { setProducts(data); localStorage.setItem('inventory_data_cache', JSON.stringify(data)); setLastSync('手動匯入'); };
 
             const filteredProducts = useMemo(() => { if (!searchQuery) return products; const lowerQuery = searchQuery.toLowerCase(); return products.filter(p => (p.id && p.id.toString().toLowerCase().includes(lowerQuery)) || (p.name && p.name.toLowerCase().includes(lowerQuery)) || (p.brand && p.brand.toLowerCase().includes(lowerQuery))); }, [products, searchQuery]);
@@ -439,7 +474,7 @@
 
                 return (
                     <div className={isDarkMode ? "dark" : ""}>
-                        <div className="flex flex-col h-[100dvh] w-full bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 relative max-w-md mx-auto shadow-2xl">
+                        <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 relative max-w-md mx-auto shadow-2xl">
                             {showWatchlistModal === p.id && (
                                 <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
                                     <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
@@ -529,6 +564,15 @@
                         {activeTab === 'search' && (
                             <div className="bg-white dark:bg-gray-800 p-4 pb-2 shadow-sm z-10 sticky top-0 border-b border-gray-100 dark:border-gray-700">
                                 <div className="flex justify-between items-center mb-3"><h1 className="text-xl font-bold text-gray-800 dark:text-white">庫存查詢系統</h1><div className="text-[10px] text-gray-400 flex items-center gap-1">{isSyncing && <RefreshCw className="w-3 h-3 animate-spin text-blue-500" />}{isSyncing ? "更新中..." : (lastSync ? `更新: ${lastSync}` : "")}</div></div>
+                                
+                                {/* 新增：顯示資料最後更新時間 */}
+                                {sheetLastUpdate && (
+                                    <div className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-[10px] p-2 rounded-lg mb-3 flex items-center gap-1.5">
+                                        <Clock className="w-3 h-3 shrink-0" />
+                                        <span>{sheetLastUpdate}</span>
+                                    </div>
+                                )}
+
                                 <div className="relative mb-3"><Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" /><input type="text" placeholder="輸入編號、名稱或品牌..." className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-400" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /></div>
                                 <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
                                     <div className="flex items-center gap-1 pr-2 border-r border-gray-200 dark:border-gray-700 shrink-0"><Eye className="w-3 h-3 text-gray-400" /><span className="text-[10px] text-gray-500 dark:text-gray-400">顯示:</span></div>
@@ -570,7 +614,7 @@
                             {loading && (<div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 z-50 flex items-center justify-center flex-col"><RefreshCw className="w-10 h-10 text-blue-600 animate-spin mb-2" /><span className="text-gray-600 dark:text-gray-300 font-bold">資料同步中...</span></div>)}
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center p-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)]">
+                        <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center p-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] shrink-0">
                             <button onClick={() => setActiveTab('search')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'search' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Search className="w-6 h-6" /><span className="text-[10px] font-medium">查詢</span></button>
                             <button onClick={() => setActiveTab('watchlist')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'watchlist' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Star className={`w-6 h-6 ${activeTab === 'watchlist' && Object.keys(watchlist).length > 0 ? 'fill-current' : ''}`} /><span className="text-[10px] font-medium">追蹤</span></button>
                             <button onClick={() => setActiveTab('config')} className={`flex-1 p-2 flex flex-col items-center gap-1 transition ${activeTab === 'config' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`}><Settings className="w-6 h-6" /><span className="text-[10px] font-medium">設定</span></button>
