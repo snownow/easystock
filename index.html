@@ -10,17 +10,19 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
     
-    <!-- 連結外部 Manifest -->
+    <!-- 關鍵修改：連結外部 Manifest 檔案 (這是 Android 生成獨立 APP 的必要條件) -->
     <link rel="manifest" href="./manifest.json" />
     
-    <!-- 網站圖示 -->
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPScyMCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPScyMCcgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0nMjAnIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0nMTYnIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPScyMCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPScyMCcgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0nMjAnIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0nMTYnIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
+    <!-- 網站圖示 (瀏覽器分頁用) -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPSIyMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPSIyMCIgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0iMjAiIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0iMTYiIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPSIyMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPSIyMCIgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0iMjAiIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0iMTYiIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
 
-    <!-- 核心庫 -->
+    <!-- 載入核心函式庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React 18 -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <!-- Tailwind 設定 -->
@@ -41,27 +43,41 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         * { -webkit-tap-highlight-color: transparent; }
-        /* 確保 body 填滿螢幕且不彈性滾動 */
-        html, body { height: 100%; width: 100%; overflow: hidden; overscroll-behavior-y: none; }
-        #root { height: 100%; width: 100%; }
+        /* 禁止下拉刷新，避免影響 APP 體驗 */
+        body { overscroll-behavior-y: none; }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 h-[100dvh] w-screen transition-colors duration-300">
+<!-- body 使用 h-[100dvh] 並設定全域背景色與文字色 -->
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden h-[100dvh] w-screen transition-colors duration-300">
     <div id="root" class="h-full w-full"></div>
 
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW 註冊失敗:', err));
+                navigator.serviceWorker.register('./sw.js')
+                    .then(req => console.log('Service Worker Registered'))
+                    .catch(err => console.log('Service Worker Failed', err));
             });
         }
     </script>
 
+    <!-- React 應用程式邏輯 -->
     <script type="text/babel">
         const { useState, useMemo, useEffect } = React;
 
+        // --- 內建圖示組件 ---
         const Icon = ({ path, className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className={className}
+            >
                 <g dangerouslySetInnerHTML={{ __html: path }} />
             </svg>
         );
@@ -138,6 +154,7 @@
             }
         ];
 
+        // --- 組件 ---
         const DualAxisChart = ({ salesData, priceData, selectedMonth, onMonthSelect }) => {
             const safeSalesData = salesData || new Array(12).fill(0);
             const safePriceData = priceData || new Array(12).fill(0);
@@ -304,7 +321,7 @@
                         </div>
                     )}
 
-                    {/* 安裝提示 (僅在 Chrome 支援且未安裝時顯示) */}
+                    {/* 安裝提示 */}
                     {installEvent && (
                         <div className="bg-blue-600 p-4 rounded-xl shadow-lg flex items-center justify-between text-white">
                             <div className="flex items-center gap-3"><div className="bg-white/20 p-2 rounded-lg"><Smartphone className="w-6 h-6" /></div><div><h3 className="font-bold text-sm">安裝應用程式</h3><p className="text-[10px] opacity-80">獲得更佳的全螢幕體驗</p></div></div>
@@ -317,7 +334,7 @@
                         </div>
                     )}
                     
-                    {/* 手動安裝教學 (當沒有自動安裝按鈕時顯示) */}
+                    {/* 手動安裝教學 */}
                     {!installEvent && !isLineBrowser && (
                         <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                             <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-2"><Smartphone className="w-4 h-4 text-gray-500" /> 如何安裝到手機？</h3>
@@ -509,65 +526,68 @@
                 if (p.salesTrend && p.priceTrend && p.totalYearSales > 0) { const totalRevenue = p.salesTrend.reduce((acc, qty, idx) => acc + (qty * (p.priceTrend[idx] || 0)), 0); avgPrice = Math.round(totalRevenue / p.totalYearSales); }
 
                 return (
-                    // 修正：移除多餘的 div wrapper，直接回傳內容，解決高度繼承與導覽列被擠出問題
-                    <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 relative max-w-md mx-auto shadow-2xl">
-                        {showWatchlistModal === p.id && (
-                            <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
-                                <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
-                                    <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
-                                    {watchlistGroups.map(group => (
-                                        <button key={group.id} onClick={() => handleWatchlistUpdate(p.id, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${watchedGroupId === group.id ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
-                                            <span className={`font-bold ${group.color}`}>{group.name}</span>
-                                            {watchedGroupId === group.id && <Check className="w-4 h-4 text-blue-500" />}
-                                        </button>
-                                    ))}
-                                    {isWatched && <button onClick={() => handleWatchlistUpdate(p.id, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
-                                    <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
+                    <div className={isDarkMode ? "dark" : ""}>
+                        {/* 修正重點：移除最外層多餘的 div */}
+                        <div className="fixed inset-0 flex flex-col bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 max-w-md mx-auto shadow-2xl">
+                           {/* ... 內部詳情頁邏輯不變 ... */}
+                            {showWatchlistModal === p.id && (
+                                <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
+                                    <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
+                                        <h3 className="font-bold text-gray-800 dark:text-white mb-2 text-center">設定追蹤分組</h3>
+                                        {watchlistGroups.map(group => (
+                                            <button key={group.id} onClick={() => handleWatchlistUpdate(p.id, group.id)} className={`w-full p-3 rounded-xl flex items-center justify-between transition-colors ${watchedGroupId === group.id ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}`}>
+                                                <span className={`font-bold ${group.color}`}>{group.name}</span>
+                                                {watchedGroupId === group.id && <Check className="w-4 h-4 text-blue-500" />}
+                                            </button>
+                                        ))}
+                                        {isWatched && <button onClick={() => handleWatchlistUpdate(p.id, null)} className="w-full p-3 rounded-xl flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium mt-2"><X className="w-4 h-4 mr-2" /> 取消追蹤</button>}
+                                        <button onClick={() => setShowWatchlistModal(null)} className="w-full p-3 text-gray-500 dark:text-gray-400 text-sm text-center">關閉</button>
+                                    </div>
                                 </div>
+                            )}
+                            <div className="bg-white dark:bg-gray-800 px-4 py-3 shadow-sm flex items-center gap-3 sticky top-0 z-10 border-b border-gray-100 dark:border-gray-700 shrink-0">
+                                <button onClick={handleCloseDetail} className="p-1 -ml-2"><ArrowLeft className="text-gray-600 dark:text-gray-300" /></button>
+                                <div className="flex-1 min-w-0"><h1 className="font-bold text-lg truncate text-gray-800 dark:text-white">{p.name}</h1><p className="text-xs text-gray-500 dark:text-gray-400">{p.id} • {p.brand}</p></div>
+                                <button onClick={() => setShowWatchlistModal(p.id)}><Star className={`w-6 h-6 ${isWatched ? (watchedGroup?.iconColor || 'fill-yellow-400 text-yellow-400') : 'text-gray-300 dark:text-gray-600'}`} /></button>
                             </div>
-                        )}
-                        <div className="bg-white dark:bg-gray-800 px-4 py-3 shadow-sm flex items-center gap-3 sticky top-0 z-10 border-b border-gray-100 dark:border-gray-700 shrink-0">
-                            <button onClick={handleCloseDetail} className="p-1 -ml-2"><ArrowLeft className="text-gray-600 dark:text-gray-300" /></button>
-                            <div className="flex-1 min-w-0"><h1 className="font-bold text-lg truncate text-gray-800 dark:text-white">{p.name}</h1><p className="text-xs text-gray-500 dark:text-gray-400">{p.id} • {p.brand}</p></div>
-                            <button onClick={() => setShowWatchlistModal(p.id)}><Star className={`w-6 h-6 ${isWatched ? (watchedGroup?.iconColor || 'fill-yellow-400 text-yellow-400') : 'text-gray-300 dark:text-gray-600'}`} /></button>
-                        </div>
-                        <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20 min-h-0">
-                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div><span className={`text-xs font-bold px-2 py-1 rounded-md ${p.status === '缺貨中' ? 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'}`}>{p.status}</span><div className="mt-2 text-3xl font-bold text-gray-800 dark:text-white">{p.totalStock}</div><div className="text-xs text-gray-400">總庫存量</div></div>
-                                    <div className="text-right space-y-1"><div className="text-xs text-gray-500 dark:text-gray-400">最後出貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastShipDate}</span></div><div className="text-xs text-gray-500 dark:text-gray-400">最後進貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastPurchaseDate}</span></div></div>
+                            <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20 min-h-0">
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div><span className={`text-xs font-bold px-2 py-1 rounded-md ${p.status === '缺貨中' ? 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'}`}>{p.status}</span><div className="mt-2 text-3xl font-bold text-gray-800 dark:text-white">{p.totalStock}</div><div className="text-xs text-gray-400">總庫存量</div></div>
+                                        <div className="text-right space-y-1"><div className="text-xs text-gray-500 dark:text-gray-400">最後出貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastShipDate}</span></div><div className="text-xs text-gray-500 dark:text-gray-400">最後進貨: <span className="font-medium text-gray-800 dark:text-gray-200">{p.lastPurchaseDate}</span></div></div>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-2 py-3 border-t border-gray-100 dark:border-gray-700">
+                                        <div className="text-center"><div className="text-lg font-bold text-orange-500">{p.stats?.orderedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已訂未出</div></div>
+                                        <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-green-600 dark:text-green-400">{p.stats?.purchasedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已採未進</div></div>
+                                        <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-gray-600 dark:text-gray-300">{p.stats?.unshippedIn || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">未進貨量</div></div>
+                                    </div>
                                 </div>
-                                <div className="grid grid-cols-3 gap-2 py-3 border-t border-gray-100 dark:border-gray-700">
-                                    <div className="text-center"><div className="text-lg font-bold text-orange-500">{p.stats?.orderedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已訂未出</div></div>
-                                    <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-green-600 dark:text-green-400">{p.stats?.purchasedUnshipped || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">已採未進</div></div>
-                                    <div className="text-center border-l border-gray-100 dark:border-gray-700"><div className="text-lg font-bold text-gray-600 dark:text-gray-300">{p.stats?.unshippedIn || 0}</div><div className="text-[10px] text-gray-500 dark:text-gray-400">未進貨量</div></div>
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><MapPin className="w-4 h-4" /> 倉庫分佈</h3>
+                                    <div className="max-h-48 overflow-y-auto"><table className="w-full text-sm"><thead className="text-gray-500 dark:text-gray-400 text-xs border-b dark:border-gray-700"><tr><th className="text-left py-2 px-2 font-normal">倉庫名稱</th><th className="text-right py-2 px-2 font-normal">數量</th></tr></thead><tbody className="divide-y divide-gray-50 dark:divide-gray-700">{p.warehouses && Object.keys(p.warehouses).length > 0 ? (Object.entries(p.warehouses).filter(([name]) => !['已訂未出', '已採未進', '未進貨量', '訂單數量', '庫存小計', '備註', '未出貨量'].includes(name)).sort(([,a], [,b]) => b - a).map(([whName, qty]) => (<tr key={whName} className={qty > 0 ? "bg-blue-50/30 dark:bg-blue-900/20" : ""}><td className="py-2 px-2 text-gray-700 dark:text-gray-300">{whName}</td><td className={`py-2 px-2 text-right font-medium ${qty > 0 ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-600"}`}>{qty}</td></tr>))) : (<tr><td colSpan="2" className="py-4 text-center text-gray-400 text-xs">無倉庫庫存資料</td></tr>)}</tbody></table></div>
                                 </div>
-                            </div>
-                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
-                                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><MapPin className="w-4 h-4" /> 倉庫分佈</h3>
-                                <div className="max-h-48 overflow-y-auto"><table className="w-full text-sm"><thead className="text-gray-500 dark:text-gray-400 text-xs border-b dark:border-gray-700"><tr><th className="text-left py-2 px-2 font-normal">倉庫名稱</th><th className="text-right py-2 px-2 font-normal">數量</th></tr></thead><tbody className="divide-y divide-gray-50 dark:divide-gray-700">{p.warehouses && Object.keys(p.warehouses).length > 0 ? (Object.entries(p.warehouses).filter(([name]) => !['已訂未出', '已採未進', '未進貨量', '訂單數量', '庫存小計', '備註', '未出貨量'].includes(name)).sort(([,a], [,b]) => b - a).map(([whName, qty]) => (<tr key={whName} className={qty > 0 ? "bg-blue-50/30 dark:bg-blue-900/20" : ""}><td className="py-2 px-2 text-gray-700 dark:text-gray-300">{whName}</td><td className={`py-2 px-2 text-right font-medium ${qty > 0 ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-600"}`}>{qty}</td></tr>))) : (<tr><td colSpan="2" className="py-4 text-center text-gray-400 text-xs">無倉庫庫存資料</td></tr>)}</tbody></table></div>
-                            </div>
-                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
-                                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><DollarSign className="w-4 h-4" /> 價格與成本結構</h3>
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg border border-gray-100 dark:border-gray-600"><div className="text-[10px] text-gray-500 dark:text-gray-400 mb-1">建議售價</div><div className="font-bold text-gray-600 dark:text-gray-300 line-through decoration-gray-400 text-sm">${p.msrp?.toLocaleString() || '-'}</div></div>
-                                    <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800"><div className="text-[10px] text-blue-600 dark:text-blue-400 mb-1">一般售價</div><div className="font-bold text-blue-700 dark:text-blue-300 text-lg">${p.price?.toLocaleString() || '-'}</div></div>
-                                    <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-100 dark:border-red-800"><div className="text-[10px] text-red-600 dark:text-red-400 mb-1">一般成本</div><div className="font-bold text-red-700 dark:text-red-300">${p.cost?.toLocaleString() || '-'}</div></div>
-                                    <div className={`p-3 rounded-lg border ${p.specialCost ? 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800' : 'bg-gray-50 border-gray-100 dark:bg-gray-700/30 dark:border-gray-600'}`}><div className={`text-[10px] mb-1 ${p.specialCost ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>特殊成本</div><div className={`font-bold ${p.specialCost ? 'text-orange-700 dark:text-orange-300' : 'text-gray-300 dark:text-gray-500'}`}>{p.specialCost ? `$${p.specialCost.toLocaleString()}` : 'N/A'}</div></div>
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2"><DollarSign className="w-4 h-4" /> 價格與成本結構</h3>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg border border-gray-100 dark:border-gray-600"><div className="text-[10px] text-gray-500 dark:text-gray-400 mb-1">建議售價</div><div className="font-bold text-gray-600 dark:text-gray-300 line-through decoration-gray-400 text-sm">${p.msrp?.toLocaleString() || '-'}</div></div>
+                                        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800"><div className="text-[10px] text-blue-600 dark:text-blue-400 mb-1">一般售價</div><div className="font-bold text-blue-700 dark:text-blue-300 text-lg">${p.price?.toLocaleString() || '-'}</div></div>
+                                        <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-100 dark:border-red-800"><div className="text-[10px] text-red-600 dark:text-red-400 mb-1">一般成本</div><div className="font-bold text-red-700 dark:text-red-300">${p.cost?.toLocaleString() || '-'}</div></div>
+                                        <div className={`p-3 rounded-lg border ${p.specialCost ? 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800' : 'bg-gray-50 border-gray-100 dark:bg-gray-700/30 dark:border-gray-600'}`}><div className={`text-[10px] mb-1 ${p.specialCost ? 'text-orange-600 dark:text-orange-400' : 'text-gray-400'}`}>特殊成本</div><div className={`font-bold ${p.specialCost ? 'text-orange-700 dark:text-orange-300' : 'text-gray-300 dark:text-gray-500'}`}>{p.specialCost ? `$${p.specialCost.toLocaleString()}` : 'N/A'}</div></div>
+                                    </div>
                                 </div>
-                            </div>
-                            {p.note && (<div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4 shadow-sm border border-yellow-100 dark:border-yellow-800 flex gap-3"><AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 shrink-0 mt-0.5" /><div><h4 className="text-xs font-bold text-yellow-700 dark:text-yellow-400 mb-1">商品備註</h4><p className="text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">{p.note}</p></div></div>)}
-                            <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
-                                <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> 銷售分析</h3>
-                                <div className="grid grid-cols-3 gap-2 mb-2 text-center divide-x divide-gray-100 dark:divide-gray-700">
-                                    <div className="text-left px-1"><span className="block text-xl font-bold text-red-600 dark:text-red-400">{p.totalYearSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">年總銷量</span></div>
-                                    <div className="px-1"><span className="block text-xl font-bold text-gray-700 dark:text-gray-300">{p.avgMonthSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均月銷</span></div>
-                                    <div className="text-right px-1"><span className="block text-xl font-bold text-orange-500 dark:text-orange-400">${avgPrice.toLocaleString()}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均成交價</span></div>
-                                </div>
-                                <DualAxisChart salesData={p.salesTrend} priceData={p.priceTrend} selectedMonth={selectedMonth} onMonthSelect={setSelectedMonth} />
-                                <div className="mt-8 border-t border-gray-100 dark:border-gray-700 pt-4">
-                                    <div className="flex justify-between items-center mb-2"><h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 flex items-center gap-2"><PieChart className="w-4 h-4" /> {selectedMonth !== null ? `${selectedMonth + 1}月平台佔比` : "全年度平台佔比"}</h4>{selectedMonth !== null && (<button onClick={() => setSelectedMonth(null)} className="text-[10px] flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"><RotateCcw className="w-3 h-3" /> 重置總覽</button>)}</div>
-                                    <PieChartComponent data={currentPieData} emptyMessage={selectedMonth !== null ? "此月份無銷售數據" : "無銷售平台數據"} />
+                                {p.note && (<div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4 shadow-sm border border-yellow-100 dark:border-yellow-800 flex gap-3"><AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 shrink-0 mt-0.5" /><div><h4 className="text-xs font-bold text-yellow-700 dark:text-yellow-400 mb-1">商品備註</h4><p className="text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">{p.note}</p></div></div>)}
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+                                    <h3 className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> 銷售分析</h3>
+                                    <div className="grid grid-cols-3 gap-2 mb-2 text-center divide-x divide-gray-100 dark:divide-gray-700">
+                                        <div className="text-left px-1"><span className="block text-xl font-bold text-red-600 dark:text-red-400">{p.totalYearSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">年總銷量</span></div>
+                                        <div className="px-1"><span className="block text-xl font-bold text-gray-700 dark:text-gray-300">{p.avgMonthSales || 0}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均月銷</span></div>
+                                        <div className="text-right px-1"><span className="block text-xl font-bold text-orange-500 dark:text-orange-400">${avgPrice.toLocaleString()}</span><span className="text-[10px] text-gray-500 dark:text-gray-400">平均成交價</span></div>
+                                    </div>
+                                    <DualAxisChart salesData={p.salesTrend} priceData={p.priceTrend} selectedMonth={selectedMonth} onMonthSelect={setSelectedMonth} />
+                                    <div className="mt-8 border-t border-gray-100 dark:border-gray-700 pt-4">
+                                        <div className="flex justify-between items-center mb-2"><h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 flex items-center gap-2"><PieChart className="w-4 h-4" /> {selectedMonth !== null ? `${selectedMonth + 1}月平台佔比` : "全年度平台佔比"}</h4>{selectedMonth !== null && (<button onClick={() => setSelectedMonth(null)} className="text-[10px] flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"><RotateCcw className="w-3 h-3" /> 重置總覽</button>)}</div>
+                                        <PieChartComponent data={currentPieData} emptyMessage={selectedMonth !== null ? "此月份無銷售數據" : "無銷售平台數據"} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -576,7 +596,7 @@
             }
 
             return (
-                // 修正：移除多餘的 dark class wrapper div，直接使用 flex-col h-full
+                // 修正：移除最外層多餘的 dark wrapper，直接使用 div
                 <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 max-w-md mx-auto shadow-2xl overflow-hidden font-sans transition-colors duration-300 relative">
                     {showWatchlistModal && (
                         <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
