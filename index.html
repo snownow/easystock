@@ -10,22 +10,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
     
-    <!-- 關鍵修改：連結外部 Manifest 檔案 (這是 Android 生成獨立 APP 的必要條件) -->
     <link rel="manifest" href="./manifest.json" />
-    
-    <!-- 網站圖示 (瀏覽器分頁用) -->
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPSIyMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPSIyMCIgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0iMjAiIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0iMTYiIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPSIyMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPSIyMCIgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0iMjAiIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0iMTYiIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPScyMCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPScyMCcgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0nMjAnIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0nMTYnIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
 
     <!-- 載入核心函式庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React 18 -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- Tailwind 設定 -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -43,41 +36,28 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         * { -webkit-tap-highlight-color: transparent; }
-        /* 禁止下拉刷新，避免影響 APP 體驗 */
+        /* 恢復預設滾動行為，但隱藏捲軸 */
         body { overscroll-behavior-y: none; }
     </style>
 </head>
-<!-- body 使用 h-[100dvh] 並設定全域背景色與文字色 -->
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden h-[100dvh] w-screen transition-colors duration-300">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 h-[100dvh] w-screen transition-colors duration-300 overflow-hidden">
     <div id="root" class="h-full w-full"></div>
 
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
-                    .then(req => console.log('Service Worker Registered'))
-                    .catch(err => console.log('Service Worker Failed', err));
+                    .then(reg => console.log('SW 註冊成功'))
+                    .catch(err => console.log('SW 註冊失敗', err));
             });
         }
     </script>
 
-    <!-- React 應用程式邏輯 -->
     <script type="text/babel">
         const { useState, useMemo, useEffect } = React;
 
-        // --- 內建圖示組件 ---
         const Icon = ({ path, className }) => (
-            <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="24" height="24" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                className={className}
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
                 <g dangerouslySetInnerHTML={{ __html: path }} />
             </svg>
         );
@@ -321,7 +301,7 @@
                         </div>
                     )}
 
-                    {/* 安裝提示 */}
+                    {/* 安裝提示 (僅在 Chrome 支援且未安裝時顯示) */}
                     {installEvent && (
                         <div className="bg-blue-600 p-4 rounded-xl shadow-lg flex items-center justify-between text-white">
                             <div className="flex items-center gap-3"><div className="bg-white/20 p-2 rounded-lg"><Smartphone className="w-6 h-6" /></div><div><h3 className="font-bold text-sm">安裝應用程式</h3><p className="text-[10px] opacity-80">獲得更佳的全螢幕體驗</p></div></div>
@@ -334,7 +314,7 @@
                         </div>
                     )}
                     
-                    {/* 手動安裝教學 */}
+                    {/* 手動安裝教學 (當沒有自動安裝按鈕時顯示) */}
                     {!installEvent && !isLineBrowser && (
                         <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                             <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-2"><Smartphone className="w-4 h-4 text-gray-500" /> 如何安裝到手機？</h3>
@@ -527,9 +507,8 @@
 
                 return (
                     <div className={isDarkMode ? "dark" : ""}>
-                        {/* 修正重點：移除最外層多餘的 div */}
+                        {/* 修正重點：使用 fixed inset-0 強制全螢幕，解決手機導覽列跑版問題 */}
                         <div className="fixed inset-0 flex flex-col bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 max-w-md mx-auto shadow-2xl">
-                           {/* ... 內部詳情頁邏輯不變 ... */}
                             {showWatchlistModal === p.id && (
                                 <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
                                     <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
