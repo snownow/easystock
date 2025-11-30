@@ -10,8 +10,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href='data:application/manifest+json;base64,eyJuYW1lIjoi5bqr5a2Y6Yq35ZSu57O757WxIiwic2hvcnRfbmFtZSI6IuW6q+WtmOezu+e1sSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjM2I4MmY2IiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMmJ6eGtaVzVrYjNOaGRDQnVaVzR4TzF4eWRXeHNiM0lnZFhOb0l6MDdUMHN4TWpBek9Dd3hNakF3T3k4eE1qQTdJajRnZG1sbGR3cGpiM1I1Ym1ac0lHNWhibVJsUFNJeU5DMHhMekl3TURBd0wzTjJaeTlrUGp4eVoWNTAgZDJsa2RHaDfOVEV5SW1obGFXZG9kRDBpTlRFeUlpQnl4UDB4TURBaWUyYXNiRDFpSXpNaU9ESm1OaUl2UGp4d1lYUm9JR1E5SWsweE1EQWdNVGd3YUNnek1USjJNakl3YUMwek1Ub3lJaUJtYVd4c1BTSW1abUpsWm1JMExDOXdZWFJvSUdROUlrMHhNREFnTVRJdGJEY3dMVGN3YUNreE9USnN/TmpBZ056QWlJR1pwYkd3OUlqUm1OVGxsTUdJaXZQanh3WVhSb0lHUTlJazB4TURBZ01UZ3dhQzN6TVRJaUlITjBjbTl0WlQwZ0kySTRZVEl4TWlJZ2MzUnliMnRsTFhkcFZEZDBaM04wSUhOMGNtOXJaUzFsYldGbmJYVndQU0l5Y205MWJtUWlMMzQ4WTJseVkyeGxJR040UFRveE9EQWdZMms5SWpJNU1DSWdjam9pTWpBaUlHWnBiR3c5SWpNM09ETTFNZ2dpTDM0OGMybHlZMnhsSUdONFBUb3pNekl0WTJreU9UQWdjam9pTWpBaUlHWnBiR3c5SWpNM09ETTFNZ2dpTDM0OHBHWjBhQ0JrUFRveU1qQWdNek13Y1RNMklETXdJRGM1SURBd0lpQnpkSEp2YTJVa1BTSW1jemd6TlRCbUlpQnpkSEp2YTJVdGQybGtkR2c5SWpFMklpQm1hV3hzUFNJdWIyNWxJaUJ6ZEhKdmEyVXRiR2x1WldOaGNEOXBablZ1WkNJdlBqd3ZjM1puUGc9PSIsInNpemVzIjoiNTEyeDUxMiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=' />
+    <!-- 網站圖示 (Favicon) - 微笑紙箱 -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M64 132L256 36l192 96v288a48 48 0 0 1-48 48H112a48 48 0 0 1-48-48V132z' fill='%23F59E0B'/%3E%3Cpath d='M64 132l192 96 192-96' fill='none' stroke='%23B45309' stroke-width='24' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M256 228v240' fill='none' stroke='%23B45309' stroke-width='24' stroke-linecap='round'/%3E%3Ccircle cx='180' cy='320' r='24' fill='%2378350F'/%3E%3Ccircle cx='332' cy='320' r='24' fill='%2378350F'/%3E%3Cpath d='M200 380c20 20 92 20 112 0' fill='none' stroke='%2378350F' stroke-width='20' stroke-linecap='round'/%3E%3C/svg%3E">
+    
+    <!-- PWA Manifest (包含可愛圖示與安裝設定) -->
+    <link rel="manifest" href='data:application/manifest+json;base64,eyJuYW1lIjoi5bqr5a2Y6Yq35ZSu57O757WxIiwic2hvcnRfbmFtZSI6IuW6q+WtmOezu+e1sSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjM2I4MmY2IiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMmJ6eGtaVzVrYjNOaGRDQnVaVzR4TzF4eWRXeHNiM0lnZGlsemQyVnlUbTh3SURBd0lEVXhNaUJ1TVRJOUlqTXlOUzR5T0M5M015SWdmR1pwYkd4aGJtU2lJSFpwWlhRaklqQWdNQ0E1TVRJZ05URXlJajQ4TDIxaGRHZ2dZWEJ3YkdGMFlXMWxMVzF2WW1sc1pTMXpibTlsTFd4aGJHVjBMUzF2ZG1WeUxTMXZjbWN2WkdWMFlXbHNhVzVsT1d4dmJHVnlMbWQ0Ym1WMExtNXZiR3g4TDIxaGRHZ2dZWEJ3YkdGMFlXMWxMVzF2WW1sc1pTMXpibTlsTFd4aGJHVjBMUzF2ZG1WeUxTMXZjbWN2WkdWMFlXbHNhVzVsT1d4dmJHVnlMbWQ0Ym1WMExtNXZiR3g4Y3pjOQoiICAvPgo8cGF0aCBkPSJNNjQgMTMyTDI1NiAzNmwxOTIgOTZ2Mjg4YTQ4IDQ4IDAgMCAxLTQ4IDQ4SDExMmE0OCA0OCAwIDAgMS00OC00OFYxMzJ6IiBmaWxsPSIjRjU5RTBCIi8+CjxwYXRoIGQ9Ik02NCAxMzJsMTkyIDk2IDE5Mi05NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQjQ1MzA5IiBzdHJva2Utd2lkdGg9IjI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTI1NiAyMjh2MjQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNCNDUzMDkiIHN0cm9rZS13aWR0aD0iMjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8Y2lyY2xlIGN4PSIxODAiIGN5PSIzMjAiIHI9IjI0IiBmaWxsPSIjNzgzNTBGIi8+CjxjaXJjbGUgY3g9IjMzMiIgY3k9IjMyMCIgcj0iMjQiIGZpbGw9IiM3ODM1MEYiLz4KPHBhdGggZD0iTTIwMCAzODBjMjAgMjAgOTIgMjAgMTEyIDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzc4MzUwRiIgc3Ryb2tlLXdpZHRoPSIyMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPg==Iiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJwdXJwb3NlIjoiYW55IG1hc2thYmxlIn1dfQ==' />
 
     <!-- 載入核心函式庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -43,27 +46,27 @@
         body { overscroll-behavior-y: none; }
     </style>
 </head>
-<!-- body 使用 h-[100dvh] 並設定全域背景色與文字色 -->
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden h-[100dvh] w-screen transition-colors duration-300">
     <div id="root" class="h-full w-full"></div>
+
+    <!-- Service Worker 註冊腳本 (啟動 PWA 安裝功能的關鍵) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // 註冊 sw.js，這會讓瀏覽器知道這是一個 PWA
+                navigator.serviceWorker.register('./sw.js')
+                    .then(req => console.log('Service Worker Registered'))
+                    .catch(err => console.log('Service Worker Failed', err));
+            });
+        }
+    </script>
 
     <!-- React 應用程式邏輯 -->
     <script type="text/babel">
         const { useState, useMemo, useEffect } = React;
 
-        // --- 內建圖示組件 ---
         const Icon = ({ path, className }) => (
-            <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="24" height="24" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                className={className}
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
                 <g dangerouslySetInnerHTML={{ __html: path }} />
             </svg>
         );
@@ -140,7 +143,6 @@
             }
         ];
 
-        // --- 組件 ---
         const DualAxisChart = ({ salesData, priceData, selectedMonth, onMonthSelect }) => {
             const safeSalesData = salesData || new Array(12).fill(0);
             const safePriceData = priceData || new Array(12).fill(0);
@@ -512,7 +514,7 @@
                 if (p.salesTrend && p.priceTrend && p.totalYearSales > 0) { const totalRevenue = p.salesTrend.reduce((acc, qty, idx) => acc + (qty * (p.priceTrend[idx] || 0)), 0); avgPrice = Math.round(totalRevenue / p.totalYearSales); }
 
                 return (
-                    // 修正：移除多餘的 dark class wrapper div
+                    // 修正：移除多餘的 dark class wrapper div，直接使用 flex-col h-full
                     <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 relative max-w-md mx-auto shadow-2xl">
                         {showWatchlistModal === p.id && (
                             <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
@@ -579,7 +581,7 @@
             }
 
             return (
-                // 修正：移除多餘的 dark class wrapper div
+                // 修正：移除多餘的 dark class wrapper div，直接使用 flex-col h-full
                 <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 max-w-md mx-auto shadow-2xl overflow-hidden font-sans transition-colors duration-300 relative">
                     {showWatchlistModal && (
                         <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
