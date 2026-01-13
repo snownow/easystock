@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>庫存銷售系統</title>
     
-    <!-- PWA 設定 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#ffffff">
     
     <link rel="manifest" href="./manifest.json" />
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPScyMCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPScyMCcgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0nMjAnIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0nMTYnIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
+    
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPSIyMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPSIyMCIgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0iMjAiIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0iMTYiIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzEwMCcgZmlsbD0nIzNiODJmNicvPjxwYXRoIGQ9J00xMDAgMTgwaDMxMnYyMjBoLTMxMnonIGZpbGw9JyNmYmJmMjQnLz48cGF0aCBkPSJNMTAwIDE4MGw2MC03MGgxOTJsNjAgNzAiIGZpbGw9JyNmNTllMGInLz48cGF0aCBkPSJNMTAwIDE4MGgzMTIiIHN0cm9rZT0nI2I0NTMwOScgc3Ryb2tlLXdpZHRoPScyMCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PGNpcmNsZSBjeD0nMTgwJyBjeT0nMjkwJyByPScyMCcgZmlsbD0nIzc4MzUwZicvPjxjaXJjbGUgY3g9JzMzMicgY3k9JzI5MCcgcj0nMjAnIGZpbGw9JyM3ODM1MGYnLz48cGF0aCBkPSJNMjIwIDMzMHEzNiAzMCA3MiAwIiBzdHJva2U9JyM3ODM1MGYnIHN0cm9rZS13aWR0aD0iMTYiIGZpbGw9J25vbmUnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==">
 
-    <!-- 載入核心函式庫 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -36,19 +36,16 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         * { -webkit-tap-highlight-color: transparent; }
-        /* 恢復預設滾動行為，但隱藏捲軸 */
         body { overscroll-behavior-y: none; }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 h-[100dvh] w-screen transition-colors duration-300 overflow-hidden">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden h-[100dvh] w-screen transition-colors duration-300">
     <div id="root" class="h-full w-full"></div>
 
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('SW 註冊成功'))
-                    .catch(err => console.log('SW 註冊失敗', err));
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW 註冊失敗:', err));
             });
         }
     </script>
@@ -125,7 +122,7 @@
                 category: "系統",
                 totalStock: 0, lastShipDate: "-", lastPurchaseDate: "-", status: "待設定",
                 stats: { purchasedUnshipped: 0, orderedUnshipped: 0, unshippedIn: 0 },
-                warehouses: {},
+                warehouses: { "新竹": 0 },
                 salesTrend: [0,0,0,0,0,0,0,0,0,0,0,0],
                 priceTrend: [0,0,0,0,0,0,0,0,0,0,0,0],
                 salesPlatform: [],
@@ -134,7 +131,6 @@
             }
         ];
 
-        // --- 組件 ---
         const DualAxisChart = ({ salesData, priceData, selectedMonth, onMonthSelect }) => {
             const safeSalesData = salesData || new Array(12).fill(0);
             const safePriceData = priceData || new Array(12).fill(0);
@@ -301,7 +297,7 @@
                         </div>
                     )}
 
-                    {/* 安裝提示 (僅在 Chrome 支援且未安裝時顯示) */}
+                    {/* 安裝提示 */}
                     {installEvent && (
                         <div className="bg-blue-600 p-4 rounded-xl shadow-lg flex items-center justify-between text-white">
                             <div className="flex items-center gap-3"><div className="bg-white/20 p-2 rounded-lg"><Smartphone className="w-6 h-6" /></div><div><h3 className="font-bold text-sm">安裝應用程式</h3><p className="text-[10px] opacity-80">獲得更佳的全螢幕體驗</p></div></div>
@@ -314,7 +310,7 @@
                         </div>
                     )}
                     
-                    {/* 手動安裝教學 (當沒有自動安裝按鈕時顯示) */}
+                    {/* 手動安裝教學 */}
                     {!installEvent && !isLineBrowser && (
                         <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                             <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2 mb-2"><Smartphone className="w-4 h-4 text-gray-500" /> 如何安裝到手機？</h3>
@@ -360,6 +356,13 @@
                                 <button onClick={(e) => { e.stopPropagation(); onOpenWatchlistModal(p.id); }} className="p-1 -mr-1"><Star className={`w-5 h-5 ${isWatched ? (groupInfo?.iconColor || 'fill-yellow-400 text-yellow-400') : 'text-gray-300 dark:text-gray-600'}`} /></button>
                                 <div className="flex flex-col items-end gap-1">
                                     {visibleColumns.stock && ( <div className="flex flex-col items-end"> <div className="text-lg font-bold text-blue-600 dark:text-blue-400 leading-none">{p.totalStock}</div> <div className="text-[9px] text-gray-400">庫存</div> </div> )}
+                                    {/* 新增：新竹倉顯示 (Teal Color) */}
+                                    {visibleColumns.hsinchu && (
+                                        <div className="flex flex-col items-end">
+                                            <div className="text-lg font-bold text-teal-600 dark:text-teal-400 leading-none">{p.warehouses['新竹'] || 0}</div>
+                                            <div className="text-[9px] text-gray-400">新竹</div>
+                                        </div>
+                                    )}
                                     {visibleColumns.price && ( <div className="flex flex-col items-end"> <div className="text-sm font-bold text-gray-700 dark:text-gray-200 leading-none">${p.price?.toLocaleString()}</div> <div className="text-[9px] text-gray-400">售價</div> </div> )}
                                     {visibleColumns.cost && ( <div className="flex flex-col items-end"> <div className="text-sm font-bold text-red-500 dark:text-red-400 leading-none">${p.cost?.toLocaleString()}</div> <div className="text-[9px] text-gray-400">成本</div> </div> )}
                                 </div>
@@ -405,7 +408,8 @@
             const [activeWatchlistGroup, setActiveWatchlistGroup] = useState(1); 
             const [showWatchlistModal, setShowWatchlistModal] = useState(null); 
             const [selectedMonth, setSelectedMonth] = useState(null);
-            const [visibleColumns, setVisibleColumns] = useState(() => { try { const saved = localStorage.getItem('inventory_visible_columns'); return saved ? JSON.parse(saved) : { stock: true, price: false, cost: false }; } catch (e) { return { stock: true, price: false, cost: false }; } });
+            // 修改：加入 hsinchu 選項
+            const [visibleColumns, setVisibleColumns] = useState(() => { try { const saved = localStorage.getItem('inventory_visible_columns'); return saved ? JSON.parse(saved) : { stock: true, hsinchu: false, price: false, cost: false }; } catch (e) { return { stock: true, hsinchu: false, price: false, cost: false }; } });
             useEffect(() => { localStorage.setItem('inventory_visible_columns', JSON.stringify(visibleColumns)); }, [visibleColumns]);
 
             const [isDarkMode, setIsDarkMode] = useState(() => { try { const saved = localStorage.getItem('app_dark_mode'); return saved === 'true'; } catch(e) { return false; } });
@@ -507,8 +511,8 @@
 
                 return (
                     <div className={isDarkMode ? "dark" : ""}>
-                        {/* 修正重點：使用 fixed inset-0 強制全螢幕，解決手機導覽列跑版問題 */}
                         <div className="fixed inset-0 flex flex-col bg-gray-50 dark:bg-gray-900 animate-in slide-in-from-right duration-200 transition-colors duration-300 max-w-md mx-auto shadow-2xl">
+                            {/* ... (詳情頁 Modal 與標題列保持不變) ... */}
                             {showWatchlistModal === p.id && (
                                 <div className="absolute inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-4 animate-in fade-in">
                                     <div className="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-xl space-y-2">
@@ -529,7 +533,9 @@
                                 <div className="flex-1 min-w-0"><h1 className="font-bold text-lg truncate text-gray-800 dark:text-white">{p.name}</h1><p className="text-xs text-gray-500 dark:text-gray-400">{p.id} • {p.brand}</p></div>
                                 <button onClick={() => setShowWatchlistModal(p.id)}><Star className={`w-6 h-6 ${isWatched ? (watchedGroup?.iconColor || 'fill-yellow-400 text-yellow-400') : 'text-gray-300 dark:text-gray-600'}`} /></button>
                             </div>
+
                             <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20 min-h-0">
+                                {/* ... (詳情頁內容保持不變) ... */}
                                 <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
                                     <div className="flex justify-between items-start mb-4">
                                         <div><span className={`text-xs font-bold px-2 py-1 rounded-md ${p.status === '缺貨中' ? 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'}`}>{p.status}</span><div className="mt-2 text-3xl font-bold text-gray-800 dark:text-white">{p.totalStock}</div><div className="text-xs text-gray-400">總庫存量</div></div>
@@ -602,7 +608,7 @@
                             <div className="relative mb-3"><Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" /><input type="text" placeholder="輸入編號、名稱或品牌..." className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-400" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /></div>
                             <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
                                 <div className="flex items-center gap-1 pr-2 border-r border-gray-200 dark:border-gray-700 shrink-0"><Eye className="w-3 h-3 text-gray-400" /><span className="text-[10px] text-gray-500 dark:text-gray-400">顯示:</span></div>
-                                {[{ key: 'stock', label: '庫存' }, { key: 'price', label: '售價' }, { key: 'cost', label: '成本' }].map(opt => (<button key={opt.key} onClick={() => setVisibleColumns(prev => ({ ...prev, [opt.key]: !prev[opt.key] }))} className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs border transition-colors ${visibleColumns[opt.key] ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300' : 'bg-transparent border-gray-200 text-gray-500 dark:border-gray-700 dark:text-gray-400'}`}>{visibleColumns[opt.key] && <Check className="w-3 h-3" />}{opt.label}</button>))}
+                                {[{ key: 'stock', label: '庫存' }, { key: 'hsinchu', label: '新竹' }, { key: 'price', label: '售價' }, { key: 'cost', label: '成本' }].map(opt => (<button key={opt.key} onClick={() => setVisibleColumns(prev => ({ ...prev, [opt.key]: !prev[opt.key] }))} className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs border transition-colors ${visibleColumns[opt.key] ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300' : 'bg-transparent border-gray-200 text-gray-500 dark:border-gray-700 dark:text-gray-400'}`}>{visibleColumns[opt.key] && <Check className="w-3 h-3" />}{opt.label}</button>))}
                             </div>
                             {syncError && <div className="mt-1 text-[10px] text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> 同步異常 (請檢查設定)</div>}
                         </div>
